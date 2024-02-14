@@ -6,9 +6,14 @@ import { resolve } from 'node:path'
 import preact from '@preact/preset-vite'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
-  plugins: [preact(), dts({ rollupTypes: true })],
+  plugins: [
+    tsconfigPaths(),
+    preact(),
+    dts({ rollupTypes: true, bundledPackages: ['mitt'] }),
+  ],
   build: {
     copyPublicDir: false,
     minify: 'esbuild',

@@ -14,9 +14,6 @@
     "release": "release-it"
   },
   "type": "module",
-  "files": [
-    "dist"
-  ],
   "main": "./dist/gigs-embeds.umd.cjs",
   "module": "./dist/gigs-embeds.js",
   "types": "./dist/gigs-embeds.d.ts",
@@ -27,9 +24,6 @@
     }
   },
   "sideEffects": false,
-  "dependencies": {
-    "mitt": "^3.0.1"
-  },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.1",
     "@release-it/conventional-changelog": "^8.0.1",
@@ -53,6 +47,8 @@
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-storybook": "^0.6.15",
     "jsdom": "^24.0.0",
+    "mitt": "^3.0.1",
+    "msw": "^2.2.0",
     "preact": "^10.19.4",
     "prettier": "^3.2.5",
     "react": "^18.2.0",
@@ -62,8 +58,16 @@
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "vite-plugin-dts": "^3.7.2",
+    "vite-tsconfig-paths": "^4.3.1",
     "vitest": "^1.2.2"
   },
+  "files": [
+    "lib",
+    "dist",
+    "!**/__tests__",
+    "!**/__mocks__",
+    "!**/__stories__"
+  ],
   "prettier": {
     "singleQuote": true,
     "semi": false

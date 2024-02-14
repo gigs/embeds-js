@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "release": "release-it"
   },
   "type": "module",
   "files": [
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.1",
+    "@release-it/conventional-changelog": "^8.0.1",
     "@storybook/addon-essentials": "^7.6.15",
     "@storybook/addon-interactions": "^7.6.15",
     "@storybook/addon-links": "^7.6.15",
@@ -55,6 +57,7 @@
     "prettier": "^3.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "release-it": "^17.0.3",
     "storybook": "^7.6.15",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
@@ -64,5 +67,22 @@
   "prettier": {
     "singleQuote": true,
     "semi": false
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "Release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
   }
 }

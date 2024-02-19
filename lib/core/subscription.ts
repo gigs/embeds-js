@@ -1,4 +1,5 @@
 import { Subscription } from '../types'
+import { assert } from './assert'
 
 type FetchSubOptions = {
   /** Project id of the subscription. */

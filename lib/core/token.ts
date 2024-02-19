@@ -1,4 +1,5 @@
 import { ConnectSession } from '../types'
+import { assert } from './assert'
 
 type Tokens = {
   access_token: string

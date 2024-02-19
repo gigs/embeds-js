@@ -1,6 +1,7 @@
 import mitt from 'mitt'
 import { render } from 'preact'
 
+import { assert } from '../core/assert'
 import { fetchSubscription } from '../core/subscription'
 import { exchangeSessionWithToken } from '../core/token'
 import { ConnectSession, PortingStatus } from '../types'

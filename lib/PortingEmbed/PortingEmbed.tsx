@@ -1,3 +1,5 @@
+import { useState } from 'preact/hooks'
+
 import { Porting } from '../types'
 
 export type CustomizableEmbedProps = {
@@ -15,5 +17,7 @@ type CoreEmbedProps = {
 type PortingEmbedProps = CoreEmbedProps & CustomizableEmbedProps
 
 export function PortingEmbed({ token: _, initialPorting }: PortingEmbedProps) {
-  return <div className="__gigsPortingEmbed">Hello {initialPorting.id}!</div>
+  const [porting, _setPorting] = useState(initialPorting)
+
+  return <div className="__gigsPortingEmbed">Hello {porting.id}!</div>
 }

@@ -31,7 +31,7 @@ export type PortingAddress = {
   city: string
   country: string
   line1: string
-  line2: string
+  line2: string | null
   postalCode: string
   state: string | null
 }

@@ -3,7 +3,7 @@ import './App.css'
 import { useRef, useState } from 'preact/hooks'
 import * as React from 'react'
 
-import { PortingEmbed } from '../lib/PortingEmbed'
+import { PortingEmbed } from '../lib'
 
 function App() {
   const $portingEmbedEl = useRef<HTMLDivElement>(null)

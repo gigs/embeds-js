@@ -95,10 +95,10 @@ describe('initialization', () => {
   })
 
   it('throws with the wrong ConnectSession', async () => {
-    expect(PortingEmbed(null, { project })).rejects.toThrow(/WRONG_SESSION/i)
-    expect(PortingEmbed({}, { project })).rejects.toThrow(/WRONG_SESSION/i)
+    expect(PortingEmbed(null, { project })).rejects.toThrow(/INVALID_SESSION/)
+    expect(PortingEmbed({}, { project })).rejects.toThrow(/INVALID_SESSION/)
     expect(PortingEmbed({ secret: 'foo' }, { project })).rejects.toThrow(
-      /WRONG_SESSION/i,
+      /INVALID_SESSION/,
     )
   })
 
@@ -108,7 +108,7 @@ describe('initialization', () => {
       .params({ intent: { type: 'foo' } })
       .build()
     const init = PortingEmbed(csn, { project })
-    expect(init).rejects.toThrow(/WRONG_INTENT/)
+    expect(init).rejects.toThrow(/INVALID_SESSION/)
   })
 
   it('throws with a non-existing subscription', async () => {

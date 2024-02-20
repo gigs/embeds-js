@@ -4,7 +4,7 @@ import { render } from 'preact'
 import { assert } from '../core/assert'
 import { fetchSubscription } from '../core/subscription'
 import { exchangeSessionWithToken } from '../core/token'
-import { ConnectSession, PortingStatus } from '../types'
+import { PortingStatus } from '../types'
 import {
   CustomizableEmbedProps,
   PortingEmbed as PortingEmbedComponent,
@@ -28,30 +28,11 @@ export async function PortingEmbed(
     'NO_PROJECT: Cannot initialize PortingEmbed without a project.',
   )
 
-  // Ensure a valid ConnectSession object.
-  // The initConnectSession argument passed into this function is intentionally
-  // not typed as a ConnectSession. It's more convenient in combination with
-  // fetch() which is also not typed. Otherwise a developer would need to cast
-  // the response just to be able to initialize the embed.
-  assert(
-    initConnectSession &&
-      typeof initConnectSession === 'object' &&
-      'object' in initConnectSession &&
-      'intent' in initConnectSession &&
-      'url' in initConnectSession &&
-      initConnectSession.object === 'connectSession',
-    'WRONG_SESSION: The object you passed in is not a ConnectSession resoure. Make sure to pass in the complete resource.',
+  // Ensure that the ConnectSession is valid and obtain a token.
+  const { connectSession, token } = await exchangeSessionWithToken(
+    initConnectSession,
+    'completePorting',
   )
-  const csn = initConnectSession as ConnectSession
-  const { intent } = csn
-
-  assert(
-    intent.type === 'completePorting',
-    `WRONG_INTENT: PortingEmbed must be initialized with the "completePorting" intent, but got "${intent.type}" instead.`,
-  )
-
-  // Obtain a user token and ensure that the ConnectSession is valid.
-  const token = await exchangeSessionWithToken(csn)
 
   let element: Element | null = null
   let options = initialOptions
@@ -60,7 +41,7 @@ export async function PortingEmbed(
   // Fetch the necessary data before the embed can be mounted. While the embed
   // is loading, the embedder can show their own loading state.
   const subscription = await fetchSubscription(
-    intent.completePorting.subscription,
+    connectSession.intent.completePorting.subscription,
     { project, token },
   )
   const { porting } = subscription

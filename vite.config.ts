@@ -18,7 +18,7 @@ export default defineConfig({
     copyPublicDir: false,
     minify: 'esbuild',
     lib: {
-      entry: resolve(__dirname, 'lib/main.ts'),
+      entry: resolve(__dirname, 'lib/index.ts'),
       name: 'GigsEmbeds',
       fileName: 'gigs-embeds',
     },

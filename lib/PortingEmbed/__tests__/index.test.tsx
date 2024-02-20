@@ -89,9 +89,17 @@ describe('initialization', () => {
 
   it('throws without a project', async () => {
     const csn = await createFixtures()
-    // @ts-expect-error Assume a JS-developer forgets the project
+    // @ts-expect-error Assume the project is missing in a non-typechecked usage
     const init = PortingEmbed(csn, {})
     expect(init).rejects.toThrow(/NO_PROJECT/)
+  })
+
+  it('throws with the wrong ConnectSession', async () => {
+    expect(PortingEmbed(null, { project })).rejects.toThrow(/WRONG_SESSION/i)
+    expect(PortingEmbed({}, { project })).rejects.toThrow(/WRONG_SESSION/i)
+    expect(PortingEmbed({ secret: 'foo' }, { project })).rejects.toThrow(
+      /WRONG_SESSION/i,
+    )
   })
 
   it('throws with a wrong intent', async () => {

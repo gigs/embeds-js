@@ -16,25 +16,42 @@ export type PortingEmbedOptions = CustomizableEmbedProps
 type Events = never
 
 export async function PortingEmbed(
-  session: ConnectSession,
+  initConnectSession: unknown,
   {
     options: initialOptions,
     project,
   }: { options?: PortingEmbedOptions } & PortingEmbedInit,
 ) {
-  // Ensure embed was initialized with proper options
-  const { intent } = session
+  // Ensure embed was initialized with proper options.
   assert(
     project,
     'NO_PROJECT: Cannot initialize PortingEmbed without a project.',
   )
+
+  // Ensure a valid ConnectSession object.
+  // The initConnectSession argument passed into this function is intentionally
+  // not typed as a ConnectSession. It's more convenient in combination with
+  // fetch() which is also not typed. Otherwise a developer would need to cast
+  // the response just to be able to initialize the embed.
+  assert(
+    initConnectSession &&
+      typeof initConnectSession === 'object' &&
+      'object' in initConnectSession &&
+      'intent' in initConnectSession &&
+      'url' in initConnectSession &&
+      initConnectSession.object === 'connectSession',
+    'WRONG_SESSION: The object you passed in is not a ConnectSession resoure. Make sure to pass in the complete resource.',
+  )
+  const csn = initConnectSession as ConnectSession
+  const { intent } = csn
+
   assert(
     intent.type === 'completePorting',
     `WRONG_INTENT: PortingEmbed must be initialized with the "completePorting" intent, but got "${intent.type}" instead.`,
   )
 
-  // Get a user token and ensure that the ConnectSession is valid.
-  const token = await exchangeSessionWithToken(session)
+  // Obtain a user token and ensure that the ConnectSession is valid.
+  const token = await exchangeSessionWithToken(csn)
 
   let element: Element | null = null
   let options = initialOptions

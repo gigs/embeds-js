@@ -1,5 +1,7 @@
-import { render } from '@testing-library/preact'
+import { render, screen, waitFor } from '@testing-library/preact'
+import userEvent from '@testing-library/user-event'
 
+import { db } from '@/testing/db'
 import { connectSessionFactory } from '@/testing/factories/connectSession'
 import { portingFactory } from '@/testing/factories/porting'
 import { subscriptionFactory } from '@/testing/factories/subscription'
@@ -18,7 +20,14 @@ async function createFixtures() {
 }
 
 beforeEach(() => {
-  render(<div id="mount" />)
+  render(
+    <>
+      <div id="mount" />
+      <button type="submit" form="gigsPortingEmbedForm">
+        Submit
+      </button>
+    </>,
+  )
 })
 
 describe('mounting', () => {
@@ -142,10 +151,10 @@ describe('initialization', () => {
       expect(init).resolves.toBeDefined()
     })
 
-    it('initializes with declined', async () => {
+    it('throws with declined', async () => {
       const csn = await createWithStatus('declined')
       const init = PortingEmbed(csn, { project })
-      expect(init).resolves.toBeDefined()
+      expect(init).rejects.toThrow(/UNSUPPORTED/)
     })
 
     it('throws with draft', async () => {
@@ -177,5 +186,70 @@ describe('initialization', () => {
       const init = PortingEmbed(csn, { project })
       expect(init).rejects.toThrow(/UNSUPPORTED/)
     })
+  })
+})
+
+describe('updating a porting', () => {
+  it('sends the updated data', async () => {
+    const user = userEvent.setup()
+    const updatedFn = vitest.fn()
+
+    const csn = await createFixtures()
+    const embed = await PortingEmbed(csn, { project })
+    embed.mount('#mount')
+    embed.on('portingUpdated', updatedFn)
+
+    await user.type(screen.getByLabelText('Account Number'), '11880')
+    await user.type(screen.getByLabelText('Account PIN'), '1337')
+    await user.type(screen.getByLabelText('Birthday'), '01.01.1990')
+    await user.type(screen.getByLabelText('First Name'), 'Jane')
+    await user.type(screen.getByLabelText('Last Name'), 'Doe')
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    await waitFor(() => expect(updatedFn).toHaveBeenCalled())
+
+    const sub = db.subscriptions.find(
+      (s) => s.id === csn.intent.completePorting.subscription,
+    )
+    const prt = db.portings.find((p) => p.id === sub!.porting!.id)
+
+    expect(prt).toMatchObject({
+      accountPinExists: true,
+      accountNumber: '11880',
+      birthday: '01.01.1990',
+      firstName: 'Jane',
+      lastName: 'Doe',
+    })
+  })
+})
+
+describe('validationChange event', () => {
+  it('fires initially always valid', async () => {
+    const event = vitest.fn()
+
+    const csn = await createFixtures()
+    const embed = await PortingEmbed(csn, { project })
+    embed.mount('#mount')
+    embed.on('validationChange', event)
+
+    await waitFor(() => expect(event).toHaveBeenCalledWith({ isValid: true }))
+  })
+
+  it('fires with invalid field', async () => {
+    const event = vitest.fn()
+    const user = userEvent.setup()
+
+    const csn = await createFixtures()
+    const embed = await PortingEmbed(csn, { project })
+    embed.mount('#mount')
+    embed.on('validationChange', event)
+
+    await user.type(screen.getByLabelText('Account Number'), '123')
+    await user.clear(screen.getByLabelText('Account Number'))
+    await user.click(screen.getByLabelText('Account PIN'))
+
+    await waitFor(() =>
+      expect(event).toHaveBeenLastCalledWith({ isValid: false }),
+    )
   })
 })

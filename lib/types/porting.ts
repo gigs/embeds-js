@@ -62,3 +62,13 @@ export type PortingStatus =
   | 'completed'
   | 'canceled'
   | 'expired'
+
+export type UpdatePortingBody = {
+  accountNumber?: string
+  accountPin?: string
+  address?: PortingAddress | null
+  birthday?: string
+  donorProviderApproval?: boolean | null
+  firstName?: string
+  lastName?: string
+}

@@ -21,6 +21,8 @@ function App() {
       const project = formData.get('project')!.toString()
 
       const embed = await PortingEmbed(JSON.parse(csn), { project })
+      setLoading('loaded')
+
       embed.mount($portingEmbedEl.current!)
     } catch (error) {
       console.error(error)
@@ -46,6 +48,9 @@ function App() {
       {loading === 'idle' && <div>Fill out form first</div>}
       {loading === 'loading' && <div>Loading...</div>}
       <div ref={$portingEmbedEl} />
+      <button type="submit" form="gigsPortingEmbedForm">
+        Save porting
+      </button>
     </>
   )
 }

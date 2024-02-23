@@ -1,6 +1,5 @@
-import { useState } from 'preact/hooks'
-
-import { Porting } from '../types'
+import { Porting, UpdatePortingBody } from '../types'
+import { PortingForm } from './PortingForm'
 
 export type CustomizableEmbedProps = {
   // TODO: add styling options
@@ -9,15 +8,32 @@ export type CustomizableEmbedProps = {
   }
 }
 
+export type ValidationChangeEvent = {
+  isValid: boolean
+}
+
 type CoreEmbedProps = {
-  token: string
-  initialPorting: Porting
+  porting: Porting
+  onValidationChange?: (event: ValidationChangeEvent) => unknown
+  onPortingUpdate?: (updatedFields: UpdatePortingBody) => unknown
 }
 
 type PortingEmbedProps = CoreEmbedProps & CustomizableEmbedProps
 
-export function PortingEmbed({ token: _, initialPorting }: PortingEmbedProps) {
-  const [porting, _setPorting] = useState(initialPorting)
-
-  return <div className="__gigsPortingEmbed">Hello {porting.id}!</div>
+export function PortingEmbed({
+  porting,
+  onPortingUpdate,
+  onValidationChange,
+}: PortingEmbedProps) {
+  return (
+    <div className="__gigsPortingEmbed">
+      <PortingForm
+        porting={porting}
+        onValidationChange={onValidationChange}
+        onSubmit={async (updatedFields) => {
+          await onPortingUpdate?.(updatedFields)
+        }}
+      />
+    </div>
+  )
 }

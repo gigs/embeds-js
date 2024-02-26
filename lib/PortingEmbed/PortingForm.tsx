@@ -2,11 +2,12 @@ import { required, useForm } from '@modular-forms/preact'
 import { useSignalEffect } from '@preact/signals'
 
 import { Porting } from '../types'
+import { sanitizeSubmitData } from './sanitizeSubmitData'
 
 type Props = {
   porting: Porting
   onValidationChange?: (event: { isValid: boolean }) => unknown
-  onSubmit: (data: PortingForm) => unknown
+  onSubmit: (data: Partial<PortingForm>) => unknown
 }
 
 type PortingForm = {
@@ -21,7 +22,7 @@ export function PortingForm({ porting, onValidationChange, onSubmit }: Props) {
   const [portingForm, { Form, Field }] = useForm<PortingForm>({
     initialValues: {
       accountNumber: porting.accountNumber || '',
-      accountPin: porting.accountPinExists ? '[***]' : '',
+      accountPin: '',
       birthday: porting.birthday || '',
       firstName: porting.firstName || '',
       lastName: porting.lastName || '',
@@ -35,7 +36,15 @@ export function PortingForm({ porting, onValidationChange, onSubmit }: Props) {
   })
 
   return (
-    <Form id="gigsPortingEmbedForm" role="form" onSubmit={onSubmit}>
+    <Form
+      id="gigsPortingEmbedForm"
+      role="form"
+      onSubmit={(data) => {
+        const sanitizedData = sanitizeSubmitData(data)
+        return onSubmit(sanitizedData)
+      }}
+      shouldDirty
+    >
       <Field name="accountNumber" validate={[required('Please enter')]}>
         {(field, props) => (
           <div>
@@ -51,11 +60,19 @@ export function PortingForm({ porting, onValidationChange, onSubmit }: Props) {
         )}
       </Field>
 
-      <Field name="accountPin" validate={[required('Please enter')]}>
+      <Field
+        name="accountPin"
+        validate={porting.accountPinExists ? [] : [required('Please enter')]}
+      >
         {(field, props) => (
           <div>
             <label for="accountPin">Account PIN</label>
-            <input id="accountPin" type="text" value={field.value} {...props} />
+            <input
+              id="accountPin"
+              type="text"
+              placeholder={porting.accountPinExists ? '••••' : undefined}
+              {...props}
+            />
             {field.error && <div>{field.error}</div>}
           </div>
         )}

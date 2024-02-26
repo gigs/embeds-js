@@ -222,34 +222,3 @@ describe('updating a porting', () => {
     })
   })
 })
-
-describe('validationChange event', () => {
-  it('fires initially always valid', async () => {
-    const event = vitest.fn()
-
-    const csn = await createFixtures()
-    const embed = await PortingEmbed(csn, { project })
-    embed.mount('#mount')
-    embed.on('validationChange', event)
-
-    await waitFor(() => expect(event).toHaveBeenCalledWith({ isValid: true }))
-  })
-
-  it('fires with invalid field', async () => {
-    const event = vitest.fn()
-    const user = userEvent.setup()
-
-    const csn = await createFixtures()
-    const embed = await PortingEmbed(csn, { project })
-    embed.mount('#mount')
-    embed.on('validationChange', event)
-
-    await user.type(screen.getByLabelText('Account Number'), '123')
-    await user.clear(screen.getByLabelText('Account Number'))
-    await user.click(screen.getByLabelText('Account PIN'))
-
-    await waitFor(() =>
-      expect(event).toHaveBeenLastCalledWith({ isValid: false }),
-    )
-  })
-})

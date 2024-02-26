@@ -4,9 +4,11 @@ import { portingFactory } from '@/testing/factories/porting'
 
 import { PortingEmbed } from '../PortingEmbed'
 
-it('gets the porting', () => {
+it('renders a form', () => {
   const porting = portingFactory.params({ id: 'prt_123' }).build()
-  render(<PortingEmbed initialPorting={porting} token="abc:123" />)
-  const greeting = screen.getByText(/Hello prt_123/i)
-  expect(greeting).toBeInTheDocument()
+  render(<PortingEmbed porting={porting} />)
+  const form = screen.getByRole('form')
+  expect(form).toBeInTheDocument()
 })
+
+// TODO: different forms based on required fields

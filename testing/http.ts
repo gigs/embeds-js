@@ -1,6 +1,7 @@
 import { http, HttpHandler, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
+import { UpdatePortingBody } from '../lib/types'
 import { db } from './db'
 
 export const handlers: HttpHandler[] = [
@@ -21,6 +22,44 @@ export const handlers: HttpHandler[] = [
       }
 
       return HttpResponse.json(sub)
+    },
+  ),
+
+  http.patch<{ project: string; id: string }, UpdatePortingBody>(
+    'https://api.gigs.com/projects/:project/portings/:id',
+    async ({ params, request }) => {
+      const prt = db.portings.find((prt) => prt.id === params.id)
+
+      if (!prt) {
+        return HttpResponse.json(
+          { object: 'error', type: 'notFound' },
+          { status: 404 },
+        )
+      }
+
+      const body = await request.json()
+
+      // Simulate an API error by submitting accountNumber: 'MAGIC_FAIL'
+      if (body.accountNumber === 'MAGIC_FAIL') {
+        return HttpResponse.json(
+          { message: 'Simulated error' },
+          { status: 422 },
+        )
+      }
+
+      const newPrt = { ...prt, ...body }
+
+      // The accountPin is not saved in the resource. When an accountPin is set,
+      // it sets the accountPinExists flag.
+      if (newPrt.accountPin) {
+        newPrt.accountPinExists = true
+        delete newPrt.accountPin
+      }
+
+      const index = db.portings.findIndex((prt) => prt.id === params.id)
+      db.portings[index] = newPrt
+
+      return HttpResponse.json(newPrt)
     },
   ),
 

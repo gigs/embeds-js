@@ -8,6 +8,7 @@ import { PortingEmbed } from '../lib'
 function App() {
   const $portingEmbedEl = useRef<HTMLDivElement>(null)
   const [loading, setLoading] = useState<'idle' | 'loading' | 'loaded'>('idle')
+  const [submitting, setSubmitting] = useState(false)
 
   async function handleSubmit(
     event: React.JSX.TargetedSubmitEvent<HTMLFormElement>,
@@ -21,7 +22,17 @@ function App() {
       const project = formData.get('project')!.toString()
 
       const embed = await PortingEmbed(JSON.parse(csn), { project })
+      setLoading('loaded')
+
       embed.mount($portingEmbedEl.current!)
+
+      embed.on('submitStatus', (evt) => {
+        console.log('submit status changed:', evt)
+        setSubmitting(evt.status === 'loading')
+      })
+      embed.on('validationChange', (evt) => {
+        console.log('Porting Form is valid: ', evt)
+      })
     } catch (error) {
       console.error(error)
       setLoading('idle')
@@ -46,6 +57,9 @@ function App() {
       {loading === 'idle' && <div>Fill out form first</div>}
       {loading === 'loading' && <div>Loading...</div>}
       <div ref={$portingEmbedEl} />
+      <button type="submit" form="gigsPortingEmbedForm" disabled={submitting}>
+        {submitting ? 'Submitting...' : 'Save porting'}
+      </button>
     </>
   )
 }

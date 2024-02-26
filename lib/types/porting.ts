@@ -31,7 +31,7 @@ export type PortingAddress = {
   city: string
   country: string
   line1: string
-  line2: string
+  line2: string | null
   postalCode: string
   state: string | null
 }
@@ -62,3 +62,13 @@ export type PortingStatus =
   | 'completed'
   | 'canceled'
   | 'expired'
+
+export type UpdatePortingBody = {
+  accountNumber?: string
+  accountPin?: string
+  address?: PortingAddress | null
+  birthday?: string
+  donorProviderApproval?: boolean | null
+  firstName?: string
+  lastName?: string
+}

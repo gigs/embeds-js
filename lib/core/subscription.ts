@@ -16,7 +16,7 @@ type FetchSubOptions = {
 export async function fetchSubscription(sub: string, opts: FetchSubOptions) {
   const res = await fetch(
     `https://api.gigs.com/projects/${opts.project}/subscriptions/${sub}`,
-    { headers: { authorization: `bearer ${opts.token} ` } },
+    { headers: { authorization: `Bearer ${opts.token}` } },
   )
   const body = await res.json().catch(() => res.text())
   assert(

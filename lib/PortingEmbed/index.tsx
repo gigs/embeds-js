@@ -2,12 +2,14 @@ import mitt from 'mitt'
 import { render } from 'preact'
 
 import { assert } from '../core/assert'
+import { patchPorting } from '../core/porting'
 import { fetchSubscription } from '../core/subscription'
 import { exchangeSessionWithToken } from '../core/token'
-import { PortingStatus } from '../types'
+import { Porting, PortingStatus, UpdatePortingBody } from '../types'
 import {
   CustomizableEmbedProps,
   PortingEmbed as PortingEmbedComponent,
+  ValidationChangeEvent,
 } from './PortingEmbed'
 
 type PortingEmbedInit = {
@@ -16,7 +18,15 @@ type PortingEmbedInit = {
 }
 export type PortingEmbedOptions = CustomizableEmbedProps
 
-type Events = never
+type SubmitStatusEvent =
+  | { status: 'loading' }
+  | { status: 'success'; porting: Porting }
+  | { status: 'error'; error: unknown }
+
+type Events = {
+  validationChange: ValidationChangeEvent
+  submitStatus: SubmitStatusEvent
+}
 
 /**
  * Initializes an embed to complete a porting (port-in a number). Requires an
@@ -64,17 +74,37 @@ export async function PortingEmbed(
     connectSession.intent.completePorting.subscription,
     { project, token },
   )
-  const { porting } = subscription
-  assert(porting, 'NOT_FOUND: The given subscription has no porting.')
+  assert(
+    subscription.porting,
+    'NOT_FOUND: The given subscription has no porting.',
+  )
+  let porting = subscription.porting
 
-  const supportedPortingStatus: PortingStatus[] = [
-    'informationRequired',
-    'declined',
-  ]
+  const supportedPortingStatus: PortingStatus[] = ['informationRequired']
   assert(
     supportedPortingStatus.includes(porting.status),
     `UNSUPPORTED: Porting status "${porting.status}" is not supported by the embed.`,
   )
+
+  const handleValidationChange = (event: ValidationChangeEvent) => {
+    emitter.emit('validationChange', event)
+  }
+
+  const handlePortingUpdate = async (updatedFields: UpdatePortingBody) => {
+    emitter.emit('submitStatus', { status: 'loading' })
+
+    try {
+      porting = await patchPorting(porting.id, updatedFields, {
+        token,
+        project,
+      })
+      emitter.emit('submitStatus', { status: 'success', porting })
+    } catch (error) {
+      emitter.emit('submitStatus', { status: 'error', error })
+    } finally {
+      renderWithCurrentOptions()
+    }
+  }
 
   const renderWithCurrentOptions = () => {
     assert(element, 'No element present to render embed into.')
@@ -82,8 +112,9 @@ export async function PortingEmbed(
     render(
       <PortingEmbedComponent
         {...options}
-        token={token}
-        initialPorting={porting}
+        porting={porting}
+        onValidationChange={handleValidationChange}
+        onPortingUpdate={handlePortingUpdate}
       />,
       element,
     )

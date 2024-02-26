@@ -37,13 +37,13 @@ export function PortingForm({ porting, onValidationChange, onSubmit }: Props) {
 
   return (
     <Form
-      id="gigsPortingEmbedForm"
+      id="gigsPortingEmbedForm" // TODO: make customizable
       role="form"
+      shouldDirty // only include changed fields in the onSubmit handler
       onSubmit={(data) => {
         const sanitizedData = sanitizeSubmitData(data)
         return onSubmit(sanitizedData)
       }}
-      shouldDirty
     >
       <Field name="accountNumber" validate={[required('Please enter')]}>
         {(field, props) => (

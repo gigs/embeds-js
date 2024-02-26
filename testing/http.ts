@@ -39,6 +39,7 @@ export const handlers: HttpHandler[] = [
 
       const body = await request.json()
 
+      // Simulate an API error by submitting accountNumber: 'MAGIC_FAIL'
       if (body.accountNumber === 'MAGIC_FAIL') {
         return HttpResponse.json(
           { message: 'Simulated error' },
@@ -46,11 +47,10 @@ export const handlers: HttpHandler[] = [
         )
       }
 
-      const newPrt = {
-        ...prt,
-        ...body,
-      }
+      const newPrt = { ...prt, ...body }
 
+      // The accountPin is not saved in the resource. When an accountPin is set,
+      // it sets the accountPinExists flag.
       if (newPrt.accountPin) {
         newPrt.accountPinExists = true
         delete newPrt.accountPin

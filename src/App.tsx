@@ -57,8 +57,8 @@ function App() {
       {loading === 'idle' && <div>Fill out form first</div>}
       {loading === 'loading' && <div>Loading...</div>}
       <div ref={$portingEmbedEl} />
-      <button type="submit" form="gigsPortingEmbedForm">
-        Save porting
+      <button type="submit" form="gigsPortingEmbedForm" disabled={submitting}>
+        {submitting ? 'Submitting...' : 'Save porting'}
       </button>
     </>
   )

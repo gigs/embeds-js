@@ -53,8 +53,8 @@ describe('with existing porting fields', () => {
     expect(screen.getByLabelText('First Name')).toHaveValue('Jerry')
     expect(screen.getByLabelText('Last Name')).toHaveValue('Seinfeld')
 
-    // the account pin cannot be prefilled, and instead indicates it exists with
-    // a placeholder
+    // The account pin is not stored and cannot be pre-filled.
+    // The presence of the account pin is instead indicated with a placeholder.
     expect(screen.getByLabelText('Account PIN')).toHaveValue('')
     expect(screen.getByLabelText('Account PIN')).toHaveAttribute(
       'placeholder',

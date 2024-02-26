@@ -39,6 +39,13 @@ export const handlers: HttpHandler[] = [
 
       const body = await request.json()
 
+      if (body.accountNumber === 'MAGIC_FAIL') {
+        return HttpResponse.json(
+          { message: 'Simulated error' },
+          { status: 422 },
+        )
+      }
+
       const newPrt = {
         ...prt,
         ...body,

@@ -18,13 +18,14 @@ type PortingEmbedInit = {
 }
 export type PortingEmbedOptions = CustomizableEmbedProps
 
-type PortingUpdatedEvent = {
-  porting: Porting
-}
+type SubmitStatusEvent =
+  | { status: 'loading' }
+  | { status: 'success'; porting: Porting }
+  | { status: 'error'; error: unknown }
 
 type Events = {
   validationChange: ValidationChangeEvent
-  portingUpdated: PortingUpdatedEvent
+  submitStatus: SubmitStatusEvent
 }
 
 /**
@@ -90,12 +91,19 @@ export async function PortingEmbed(
   }
 
   const handlePortingUpdate = async (updatedFields: UpdatePortingBody) => {
-    porting = await patchPorting(porting.id, updatedFields, {
-      token,
-      project,
-    })
-    emitter.emit('portingUpdated', { porting })
-    renderWithCurrentOptions()
+    emitter.emit('submitStatus', { status: 'loading' })
+
+    try {
+      porting = await patchPorting(porting.id, updatedFields, {
+        token,
+        project,
+      })
+      emitter.emit('submitStatus', { status: 'success', porting })
+    } catch (error) {
+      emitter.emit('submitStatus', { status: 'error', error })
+    } finally {
+      renderWithCurrentOptions()
+    }
   }
 
   const renderWithCurrentOptions = () => {

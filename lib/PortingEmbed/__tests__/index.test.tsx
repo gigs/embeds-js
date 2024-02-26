@@ -190,14 +190,14 @@ describe('initialization', () => {
 })
 
 describe('updating a porting', () => {
-  it('sends the updated data', async () => {
+  it('saves the updated data', async () => {
     const user = userEvent.setup()
-    const updatedFn = vitest.fn()
+    const submitStatusEvent = vitest.fn()
 
     const csn = await createFixtures()
     const embed = await PortingEmbed(csn, { project })
     embed.mount('#mount')
-    embed.on('portingUpdated', updatedFn)
+    embed.on('submitStatus', submitStatusEvent)
 
     await user.type(screen.getByLabelText('Account Number'), '11880')
     await user.type(screen.getByLabelText('Account PIN'), '1337')
@@ -206,7 +206,13 @@ describe('updating a porting', () => {
     await user.type(screen.getByLabelText('Last Name'), 'Doe')
     await user.click(screen.getByRole('button', { name: 'Submit' }))
 
-    await waitFor(() => expect(updatedFn).toHaveBeenCalled())
+    expect(submitStatusEvent).toHaveBeenCalledWith({ status: 'loading' })
+    await waitFor(() =>
+      expect(submitStatusEvent).toHaveBeenLastCalledWith({
+        status: 'success',
+        porting: expect.anything(),
+      }),
+    )
 
     const sub = db.subscriptions.find(
       (s) => s.id === csn.intent.completePorting.subscription,
@@ -220,5 +226,35 @@ describe('updating a porting', () => {
       firstName: 'Jane',
       lastName: 'Doe',
     })
+  })
+
+  it('triggers an error event on error', async () => {
+    const user = userEvent.setup()
+    const submitStatusEvent = vitest.fn()
+
+    const csn = await createFixtures()
+    const embed = await PortingEmbed(csn, { project })
+    embed.mount('#mount')
+    embed.on('submitStatus', submitStatusEvent)
+
+    // magic string in the mocked http handler
+    await user.type(screen.getByLabelText('Account Number'), 'MAGIC_FAIL')
+
+    await user.type(screen.getByLabelText('Account PIN'), '1337')
+    await user.type(screen.getByLabelText('Birthday'), '01.01.1990')
+    await user.type(screen.getByLabelText('First Name'), 'Jane')
+    await user.type(screen.getByLabelText('Last Name'), 'Doe')
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    await waitFor(() => {
+      expect(submitStatusEvent).toHaveBeenCalledWith({
+        status: 'error',
+        error: expect.anything(),
+      })
+    })
+
+    expect(submitStatusEvent.mock.lastCall[0].error).toMatch(
+      /FETCH_FAILED: Simulated error/i,
+    )
   })
 })

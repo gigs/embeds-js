@@ -1,14 +1,15 @@
-import { render, screen } from '@testing-library/preact'
+import { render } from '@testing-library/preact'
 
 import { portingFactory } from '@/testing/factories/porting'
 
 import { PortingEmbed } from '../PortingEmbed'
 
-it('renders a form', () => {
-  const porting = portingFactory.params({ id: 'prt_123' }).build()
+it('renders the root', () => {
+  const porting = portingFactory.build({
+    required: ['accountNumber', 'accountPin'],
+  })
   render(<PortingEmbed porting={porting} />)
-  const form = screen.getByRole('form')
-  expect(form).toBeInTheDocument()
-})
 
-// TODO: different forms based on required fields
+  // stable class, used for in other tests
+  expect(document.querySelector('.__ge_portingRoot')).toBeInTheDocument()
+})

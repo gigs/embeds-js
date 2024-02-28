@@ -12,7 +12,22 @@ import { PortingEmbed } from '../'
 const project = 'test_project'
 
 async function createFixtures() {
-  const subscription = await subscriptionFactory.create()
+  const subscription = await subscriptionFactory
+    .associations({
+      porting: portingFactory
+        .params({
+          required: [
+            'accountNumber',
+            'accountPin',
+            'firstName',
+            'lastName',
+            'address',
+            'donorProviderApproval',
+          ],
+        })
+        .build(),
+    })
+    .create()
   const connectSession = connectSessionFactory
     .completePorting(subscription.id)
     .build()
@@ -36,7 +51,7 @@ describe('mounting', () => {
     const embed = await PortingEmbed(csn, { project })
 
     embed.mount('#mount')
-    expect(document.querySelector('.__gigsPortingEmbed')).toBeInTheDocument()
+    expect(document.querySelector('.__ge_portingRoot')).toBeInTheDocument()
   })
 
   it('mounts into a DOM element', async () => {
@@ -44,7 +59,7 @@ describe('mounting', () => {
     const embed = await PortingEmbed(csn, { project })
 
     embed.mount(document.getElementById('mount')!)
-    expect(document.querySelector('.__gigsPortingEmbed')).toBeInTheDocument()
+    expect(document.querySelector('.__ge_portingRoot')).toBeInTheDocument()
   })
 })
 
@@ -55,7 +70,7 @@ describe('updating', () => {
 
     embed.mount('#mount')
     embed.update({})
-    expect(document.querySelector('.__gigsPortingEmbed')).toBeInTheDocument()
+    expect(document.querySelector('.__ge_portingRoot')).toBeInTheDocument()
   })
 
   it('fails to update an unmounted embed', async () => {
@@ -201,9 +216,6 @@ describe('updating a porting', () => {
 
     await user.type(screen.getByLabelText('Account Number'), '11880')
     await user.type(screen.getByLabelText('Account PIN'), '1337')
-    await user.type(screen.getByLabelText('Birthday'), '01.01.1990')
-    await user.type(screen.getByLabelText('First Name'), 'Jane')
-    await user.type(screen.getByLabelText('Last Name'), 'Doe')
     await user.click(screen.getByRole('button', { name: 'Submit' }))
 
     expect(submitStatusEvent).toHaveBeenCalledWith({ status: 'loading' })
@@ -222,9 +234,6 @@ describe('updating a porting', () => {
     expect(prt).toMatchObject({
       accountPinExists: true,
       accountNumber: '11880',
-      birthday: '01.01.1990',
-      firstName: 'Jane',
-      lastName: 'Doe',
     })
   })
 
@@ -239,11 +248,7 @@ describe('updating a porting', () => {
 
     // magic string in the mocked http handler
     await user.type(screen.getByLabelText('Account Number'), 'MAGIC_FAIL')
-
     await user.type(screen.getByLabelText('Account PIN'), '1337')
-    await user.type(screen.getByLabelText('Birthday'), '01.01.1990')
-    await user.type(screen.getByLabelText('First Name'), 'Jane')
-    await user.type(screen.getByLabelText('Last Name'), 'Doe')
     await user.click(screen.getByRole('button', { name: 'Submit' }))
 
     await waitFor(() => {

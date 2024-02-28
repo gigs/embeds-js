@@ -26,7 +26,7 @@ export function PortingEmbed({
   onValidationChange,
 }: PortingEmbedProps) {
   return (
-    <div className="__gigsPortingEmbed">
+    <div className="__ge_portingRoot">
       <PortingForm
         porting={porting}
         onValidationChange={onValidationChange}

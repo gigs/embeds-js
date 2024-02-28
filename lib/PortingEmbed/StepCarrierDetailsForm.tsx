@@ -1,7 +1,11 @@
-import { useForm } from '@modular-forms/preact'
+import { required, setError, toTrimmed, useForm } from '@modular-forms/preact'
 import { useSignalEffect } from '@preact/signals'
 
 import { Porting } from '../types'
+import { EmbedField } from './EmbedField'
+import { EmbedFieldError } from './EmbedFieldError'
+import { EmbedFieldInput } from './EmbedFieldInput'
+import { EmbedFieldLabel } from './EmbedFieldLabel'
 import { sanitizeSubmitData } from './sanitizeSubmitData'
 
 export type StepCarrierDetailsFormData = {
@@ -20,16 +24,15 @@ export function StepCarrierDetailsForm({
   onValidationChange,
   onSubmit,
 }: Props) {
-  const [portingForm, { Form, Field }] = useForm<StepCarrierDetailsFormData>({
+  const [form, { Form, Field }] = useForm<StepCarrierDetailsFormData>({
     initialValues: {
       accountNumber: porting.accountNumber ?? '',
-      accountPin: '',
     },
     validateOn: 'blur',
   })
 
   useSignalEffect(() => {
-    const isValid = !portingForm.invalid.value
+    const isValid = !form.invalid.value
     onValidationChange?.({ isValid })
   })
 
@@ -39,11 +42,85 @@ export function StepCarrierDetailsForm({
       role="form"
       shouldDirty // only include changed fields in the onSubmit handler
       onSubmit={(data) => {
+        const existingAccountPinWasTouched =
+          data.accountPin && porting.accountPinExists
+
+        // Make sure that the user can choose to not override the account pin,
+        // by clearing the input.
+        if (existingAccountPinWasTouched && data.accountPin === '') {
+          data.accountPin = undefined
+        }
+
+        // Notify the user that the account pin was modified but is empty
+        if (
+          existingAccountPinWasTouched &&
+          data.accountPin !== '' &&
+          data.accountPin?.trim() === ''
+        ) {
+          setError(
+            form,
+            'accountPin',
+            'The new account pin is empty. If you do not want to change the account pin, clear the input.',
+          )
+          return
+        }
+
+        // Trim the account pin if there is one
+        data.accountPin = data.accountPin?.trim()
+
         const sanitizedData = sanitizeSubmitData(data)
         return onSubmit(sanitizedData)
       }}
     >
-      {porting.id}
+      {porting.required.includes('accountNumber') && (
+        <Field
+          name="accountNumber"
+          validate={[required('The account number is required')]}
+          transform={toTrimmed({ on: 'input' })}
+        >
+          {(field, props) => (
+            <EmbedField>
+              <EmbedFieldLabel for="__ge_accountNumber">
+                Account Number
+              </EmbedFieldLabel>
+              <EmbedFieldInput
+                id="__ge_accountNumber"
+                type="text"
+                value={field.value}
+                required
+                {...props}
+              />
+              <EmbedFieldError error={field.error.value} />
+            </EmbedField>
+          )}
+        </Field>
+      )}
+      {porting.required.includes('accountPin') && (
+        <Field
+          name="accountPin"
+          validate={
+            porting.accountPinExists
+              ? []
+              : [required('The account pin is required')]
+          }
+        >
+          {(field, props) => (
+            <EmbedField>
+              <EmbedFieldLabel for="__ge_accountPin">
+                Account PIN
+              </EmbedFieldLabel>
+              <EmbedFieldInput
+                id="__ge_accountPin"
+                type="text"
+                placeholder={porting.accountPinExists ? '••••' : undefined}
+                value={field.value}
+                {...props}
+              />
+              <EmbedFieldError error={field.error.value} />
+            </EmbedField>
+          )}
+        </Field>
+      )}
     </Form>
   )
 }

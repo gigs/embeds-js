@@ -115,3 +115,51 @@ describe('holder details', () => {
     })
   })
 })
+
+describe('address', () => {
+  const porting = portingFactory.build({
+    required: ['address'],
+  })
+
+  it('renders the corresponding form', () => {
+    render(
+      <PortingForm
+        porting={porting}
+        onValidationChange={validationChange}
+        onSubmit={submit}
+      />,
+      { wrapper },
+    )
+    expect(screen.getByRole('form')).toBeInTheDocument()
+    expect(screen.getByLabelText('Line 1')).toBeInTheDocument()
+  })
+
+  it('forwards the submitted data', async () => {
+    const user = userEvent.setup()
+    render(
+      <PortingForm
+        porting={porting}
+        onValidationChange={validationChange}
+        onSubmit={submit}
+      />,
+      { wrapper },
+    )
+
+    await user.type(screen.getByLabelText('Line 1'), 'line1')
+    await user.type(screen.getByLabelText('City'), 'city')
+    await user.type(screen.getByLabelText('Postal Code'), 'pc123')
+    await user.type(screen.getByLabelText(/Country/), 'co')
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(submit).toHaveBeenCalledWith({
+      address: {
+        line1: 'line1',
+        line2: null,
+        city: 'city',
+        postalCode: 'pc123',
+        state: null,
+        country: 'CO',
+      },
+    })
+  })
+})

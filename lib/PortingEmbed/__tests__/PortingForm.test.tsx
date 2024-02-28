@@ -71,3 +71,47 @@ describe('carrier details', () => {
     })
   })
 })
+
+describe('holder details', () => {
+  const porting = portingFactory.build({
+    required: ['firstName', 'lastName', 'birthday'],
+  })
+
+  it('renders the corresponding form', () => {
+    render(
+      <PortingForm
+        porting={porting}
+        onValidationChange={validationChange}
+        onSubmit={submit}
+      />,
+      { wrapper },
+    )
+    expect(screen.getByRole('form')).toBeInTheDocument()
+    expect(screen.getByLabelText('First Name')).toBeInTheDocument()
+    expect(screen.getByLabelText('Last Name')).toBeInTheDocument()
+    expect(screen.getByLabelText('Birthday')).toBeInTheDocument()
+  })
+
+  it('forwards the submitted data', async () => {
+    const user = userEvent.setup()
+    render(
+      <PortingForm
+        porting={porting}
+        onValidationChange={validationChange}
+        onSubmit={submit}
+      />,
+      { wrapper },
+    )
+
+    await user.type(screen.getByLabelText('First Name'), 'first')
+    await user.type(screen.getByLabelText('Last Name'), 'last')
+    await user.type(screen.getByLabelText('Birthday'), '1954-04-29')
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(submit).toHaveBeenCalledWith({
+      firstName: 'first',
+      lastName: 'last',
+      birthday: '1954-04-29',
+    })
+  })
+})

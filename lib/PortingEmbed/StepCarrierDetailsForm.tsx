@@ -84,11 +84,11 @@ export function StepCarrierDetailsForm({
                 Account Number
               </EmbedFieldLabel>
               <EmbedFieldInput
+                {...props}
                 id="__ge_accountNumber"
                 type="text"
                 value={field.value}
                 required
-                {...props}
               />
               <EmbedFieldError error={field.error.value} />
             </EmbedField>
@@ -110,11 +110,11 @@ export function StepCarrierDetailsForm({
                 Account PIN
               </EmbedFieldLabel>
               <EmbedFieldInput
+                {...props}
                 id="__ge_accountPin"
                 type="text"
                 placeholder={porting.accountPinExists ? '••••' : undefined}
                 value={field.value}
-                {...props}
               />
               <EmbedFieldError error={field.error.value} />
             </EmbedField>

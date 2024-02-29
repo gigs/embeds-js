@@ -9,8 +9,7 @@ const meta: Meta<typeof PortingEmbed> = {
   component: PortingEmbed,
   tags: ['autodocs'],
   argTypes: {
-    token: { control: 'text' },
-    initialPorting: { control: 'object' },
+    porting: { control: 'object' },
     onPortingUpdate: { action: 'onPortingUpdate' },
     onValidationChange: { action: 'onValidationChange' },
   },

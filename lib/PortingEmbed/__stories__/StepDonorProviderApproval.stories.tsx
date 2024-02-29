@@ -2,11 +2,11 @@ import { Meta } from '@storybook/preact'
 
 import { portingFactory } from '@/testing/factories/porting'
 
-import { StepHolderDetailsForm } from '../StepHolderDetailsForm'
+import { StepDonorProviderApprovalForm } from '../StepDonorProviderApprovalForm'
 
-const meta: Meta<typeof StepHolderDetailsForm> = {
-  title: 'Porting/StepHolderDetailsForm',
-  component: StepHolderDetailsForm,
+const meta: Meta<typeof StepDonorProviderApprovalForm> = {
+  title: 'Porting/StepDonorProviderApprovalForm',
+  component: StepDonorProviderApprovalForm,
   tags: ['autodocs'],
   argTypes: {
     porting: { control: 'object' },
@@ -30,7 +30,7 @@ export default meta
 export const Empty = {
   args: {
     porting: portingFactory.build({
-      required: ['firstName', 'lastName', 'birthday'],
+      required: ['donorProviderApproval'],
     }),
   },
 }
@@ -38,10 +38,8 @@ export const Empty = {
 export const Prefilled = {
   args: {
     porting: portingFactory.build({
-      required: ['firstName', 'lastName', 'birthday'],
-      firstName: 'Jerry',
-      lastName: 'Seinfeld',
-      birthday: '1954-04-29',
+      required: ['donorProviderApproval'],
+      donorProviderApproval: true,
     }),
   },
 }

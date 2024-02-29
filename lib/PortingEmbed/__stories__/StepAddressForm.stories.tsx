@@ -9,7 +9,7 @@ const meta: Meta<typeof StepAddressForm> = {
   component: StepAddressForm,
   tags: ['autodocs'],
   argTypes: {
-    porting: { control: 'text' },
+    porting: { control: 'object' },
     onValidationChange: { action: 'onValidationChange' },
     onSubmit: { action: 'onSubmit' },
   },

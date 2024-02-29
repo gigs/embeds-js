@@ -9,7 +9,7 @@ const meta: Meta<typeof StepCarrierDetailsForm> = {
   component: StepCarrierDetailsForm,
   tags: ['autodocs'],
   argTypes: {
-    porting: { control: 'text' },
+    porting: { control: 'object' },
     onValidationChange: { action: 'onValidationChange' },
     onSubmit: { action: 'onSubmit' },
   },

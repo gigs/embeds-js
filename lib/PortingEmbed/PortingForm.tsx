@@ -5,9 +5,9 @@ import {
   StepCarrierDetailsFormData,
 } from './StepCarrierDetailsForm'
 import {
-  StepDonorApprovalForm,
-  StepDonorApprovalFormData,
-} from './StepDonorApproval'
+  StepDonorProviderApprovalForm,
+  StepDonorProviderApprovalFormData,
+} from './StepDonorProviderApprovalForm'
 import {
   StepHolderDetailsForm,
   StepHolderDetailsFormData,
@@ -24,7 +24,7 @@ type PortingFormData =
   | StepCarrierDetailsFormData
   | StepHolderDetailsFormData
   | { address?: StepAddressFormData }
-  | StepDonorApprovalFormData
+  | StepDonorProviderApprovalFormData
 
 export function PortingForm({ porting, onValidationChange, onSubmit }: Props) {
   const step = wizardStep(porting)
@@ -61,7 +61,7 @@ export function PortingForm({ porting, onValidationChange, onSubmit }: Props) {
 
   if (step === 'donorApproval') {
     return (
-      <StepDonorApprovalForm
+      <StepDonorProviderApprovalForm
         porting={porting}
         onValidationChange={onValidationChange}
         onSubmit={(data) => onSubmit(data)}

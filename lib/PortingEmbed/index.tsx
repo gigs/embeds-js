@@ -11,6 +11,7 @@ import {
   PortingEmbed as PortingEmbedComponent,
   ValidationChangeEvent,
 } from './PortingEmbed'
+import { wizardStep } from './wizardStep'
 
 type PortingEmbedInit = {
   /** The ID of your Gigs project. */
@@ -23,9 +24,12 @@ type SubmitStatusEvent =
   | { status: 'success'; porting: Porting }
   | { status: 'error'; error: unknown }
 
+type CompletedEvent = { porting: Porting }
+
 type Events = {
   validationChange: ValidationChangeEvent
   submitStatus: SubmitStatusEvent
+  completed: CompletedEvent
 }
 
 /**
@@ -99,6 +103,11 @@ export async function PortingEmbed(
         project,
       })
       emitter.emit('submitStatus', { status: 'success', porting })
+
+      const step = wizardStep(porting)
+      if (step === null) {
+        emitter.emit('completed', { porting })
+      }
     } catch (error) {
       emitter.emit('submitStatus', { status: 'error', error })
     } finally {

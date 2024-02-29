@@ -205,7 +205,7 @@ describe('initialization', () => {
 })
 
 describe('updating a porting', () => {
-  it('saves the updated data', async () => {
+  it('fires the submit status event', async () => {
     const user = userEvent.setup()
     const submitStatusEvent = vitest.fn()
 
@@ -225,16 +225,107 @@ describe('updating a porting', () => {
         porting: expect.anything(),
       }),
     )
+  })
 
-    const sub = db.subscriptions.find(
-      (s) => s.id === csn.intent.completePorting.subscription,
-    )
-    const prt = db.portings.find((p) => p.id === sub!.porting!.id)
+  it('goes through all required steps', async () => {
+    const user = userEvent.setup()
+    const completedEvent = vitest.fn()
 
-    expect(prt).toMatchObject({
+    const csn = await createFixtures()
+    const embed = await PortingEmbed(csn, { project })
+    embed.mount('#mount')
+    embed.on('completed', completedEvent)
+
+    const getCurrentPorting = () => {
+      const sub = db.subscriptions.find(
+        (s) => s.id === csn.intent.completePorting.subscription,
+      )
+      const prt = db.portings.find((p) => p.id === sub!.porting!.id)
+      return prt
+    }
+
+    await user.type(screen.getByLabelText('Account Number'), '11880')
+    await user.type(screen.getByLabelText('Account PIN'), '1337')
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    await screen.findByLabelText('First Name')
+    expect(getCurrentPorting()).toMatchObject({
       accountPinExists: true,
       accountNumber: '11880',
+      firstName: null,
+      lastName: null,
+      birthday: null,
+      address: null,
+      donorProviderApproval: null,
     })
+
+    await user.type(screen.getByLabelText('First Name'), 'first')
+    await user.type(screen.getByLabelText('Last Name'), 'last')
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    await screen.findByLabelText('Line 1')
+    expect(getCurrentPorting()).toMatchObject({
+      accountPinExists: true,
+      accountNumber: '11880',
+      firstName: 'first',
+      lastName: 'last',
+      birthday: null,
+      address: null,
+      donorProviderApproval: null,
+    })
+
+    await user.type(screen.getByLabelText('Line 1'), 'line1')
+    await user.type(screen.getByLabelText('City'), 'city')
+    await user.type(screen.getByLabelText('Postal Code'), 'pc123')
+    await user.type(screen.getByLabelText(/Country/), 'co')
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    await screen.findByLabelText(/i have notified my current/i)
+    expect(getCurrentPorting()).toMatchObject({
+      accountPinExists: true,
+      accountNumber: '11880',
+      firstName: 'first',
+      lastName: 'last',
+      birthday: null,
+      address: {
+        line1: 'line1',
+        line2: null,
+        city: 'city',
+        postalCode: 'pc123',
+        state: null,
+        country: 'CO',
+      },
+      donorProviderApproval: null,
+    })
+
+    await user.click(screen.getByLabelText(/i have notified my current/i))
+    expect(screen.getByLabelText(/i have notified my current/i)).toBeChecked()
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    const finalPorting = {
+      accountPinExists: true,
+      accountNumber: '11880',
+      firstName: 'first',
+      lastName: 'last',
+      birthday: null,
+      address: {
+        line1: 'line1',
+        line2: null,
+        city: 'city',
+        postalCode: 'pc123',
+        state: null,
+        country: 'CO',
+      },
+      donorProviderApproval: true,
+    }
+
+    await waitFor(() => expect(completedEvent).toHaveBeenCalled())
+
+    expect(completedEvent).toHaveBeenCalledOnce()
+    expect(completedEvent).toHaveBeenCalledWith({
+      porting: expect.objectContaining(finalPorting),
+    })
+    expect(getCurrentPorting()).toMatchObject(finalPorting)
   })
 
   it('triggers an error event on error', async () => {

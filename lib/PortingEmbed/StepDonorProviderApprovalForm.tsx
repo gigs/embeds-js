@@ -40,8 +40,8 @@ export function StepDonorProviderApprovalForm({
     <Form
       id="gigsPortingEmbedForm" // TODO: make customizable
       role="form"
-      shouldDirty // only include changed fields in the onSubmit handler
-      onSubmit={(data) => {
+      shouldActive={false}
+      onSubmit={async (data) => {
         const sanitizedData = sanitizeSubmitData(data)
         return onSubmit(sanitizedData)
       }}

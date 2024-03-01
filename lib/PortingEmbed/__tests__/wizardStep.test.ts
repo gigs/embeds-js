@@ -158,7 +158,7 @@ describe('donor approval', () => {
         donorProviderApproval: null,
       })
       .build()
-    expect(wizardStep(porting)).toBe('donorApproval')
+    expect(wizardStep(porting)).toBe('donorProviderApproval')
   })
 
   it('skips if donor approval was set', () => {
@@ -185,7 +185,7 @@ describe('donor approval', () => {
         donorProviderApproval: null,
       })
       .build()
-    expect(wizardStep(porting)).toBe('donorApproval')
+    expect(wizardStep(porting)).toBe('donorProviderApproval')
   })
 })
 

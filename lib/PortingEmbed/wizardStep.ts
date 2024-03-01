@@ -13,8 +13,8 @@ export function wizardStep(porting: Porting) {
     return 'address' as const
   }
 
-  if (requiresDonorApproval(porting)) {
-    return 'donorApproval' as const
+  if (requiresDonorProviderApproval(porting)) {
+    return 'donorProviderApproval' as const
   }
 
   return null
@@ -52,7 +52,7 @@ function requiresAddress(porting: Porting) {
   return requires(porting, 'address') && !porting.address
 }
 
-function requiresDonorApproval(porting: Porting) {
+function requiresDonorProviderApproval(porting: Porting) {
   return (
     requires(porting, 'donorProviderApproval') && !porting.donorProviderApproval
   )

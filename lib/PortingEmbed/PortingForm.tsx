@@ -59,7 +59,7 @@ export function PortingForm({ porting, onValidationChange, onSubmit }: Props) {
     )
   }
 
-  if (step === 'donorApproval') {
+  if (step === 'donorProviderApproval') {
     return (
       <StepDonorProviderApprovalForm
         porting={porting}

@@ -230,11 +230,14 @@ describe('updating a porting', () => {
   it('goes through all required steps', async () => {
     const user = userEvent.setup()
     const completedEvent = vitest.fn()
+    const stepChangeEvent = vitest.fn()
 
     const csn = await createFixtures()
     const embed = await PortingEmbed(csn, { project })
     embed.mount('#mount')
     embed.on('completed', completedEvent)
+    embed.on('stepChange', stepChangeEvent)
+    expect(embed.currentStep()).toBe('carrierDetails')
 
     const getCurrentPorting = () => {
       const sub = db.subscriptions.find(
@@ -249,6 +252,10 @@ describe('updating a porting', () => {
     await user.click(screen.getByRole('button', { name: 'Submit' }))
 
     await screen.findByLabelText('First Name')
+    expect(stepChangeEvent).toHaveBeenLastCalledWith({
+      nextStep: 'holderDetails',
+      prevStep: 'carrierDetails',
+    })
     expect(getCurrentPorting()).toMatchObject({
       accountPinExists: true,
       accountNumber: '11880',
@@ -264,6 +271,10 @@ describe('updating a porting', () => {
     await user.click(screen.getByRole('button', { name: 'Submit' }))
 
     await screen.findByLabelText('Line 1')
+    expect(stepChangeEvent).toHaveBeenLastCalledWith({
+      nextStep: 'address',
+      prevStep: 'holderDetails',
+    })
     expect(getCurrentPorting()).toMatchObject({
       accountPinExists: true,
       accountNumber: '11880',
@@ -281,6 +292,10 @@ describe('updating a porting', () => {
     await user.click(screen.getByRole('button', { name: 'Submit' }))
 
     await screen.findByLabelText(/i have notified my current/i)
+    expect(stepChangeEvent).toHaveBeenLastCalledWith({
+      nextStep: 'donorProviderApproval',
+      prevStep: 'address',
+    })
     expect(getCurrentPorting()).toMatchObject({
       accountPinExists: true,
       accountNumber: '11880',
@@ -320,6 +335,10 @@ describe('updating a porting', () => {
     }
 
     await waitFor(() => expect(completedEvent).toHaveBeenCalled())
+    expect(stepChangeEvent).toHaveBeenLastCalledWith({
+      nextStep: null,
+      prevStep: 'donorProviderApproval',
+    })
 
     expect(completedEvent).toHaveBeenCalledOnce()
     expect(completedEvent).toHaveBeenCalledWith({

@@ -56,16 +56,16 @@ export function StepHolderDetailsForm({
           transform={toTrimmed({ on: 'input' })}
         >
           {(field, props) => (
-            <EmbedField>
-              <EmbedFieldLabel for="__ge_firstName">First Name</EmbedFieldLabel>
+            <EmbedField of={field}>
+              <EmbedFieldLabel of={field}>First Name</EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
-                id="__ge_firstName"
+                of={field}
                 type="text"
                 value={field.value}
                 required
               />
-              <EmbedFieldError error={field.error.value} />
+              <EmbedFieldError of={field} />
             </EmbedField>
           )}
         </Field>
@@ -77,16 +77,16 @@ export function StepHolderDetailsForm({
           transform={toTrimmed({ on: 'input' })}
         >
           {(field, props) => (
-            <EmbedField>
-              <EmbedFieldLabel for="__ge_lastName">Last Name</EmbedFieldLabel>
+            <EmbedField of={field}>
+              <EmbedFieldLabel of={field}>Last Name</EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
-                id="__ge_lastName"
+                of={field}
                 type="text"
                 value={field.value}
                 required
               />
-              <EmbedFieldError error={field.error.value} />
+              <EmbedFieldError of={field} />
             </EmbedField>
           )}
         </Field>
@@ -98,16 +98,16 @@ export function StepHolderDetailsForm({
           transform={toTrimmed({ on: 'input' })}
         >
           {(field, props) => (
-            <EmbedField>
-              <EmbedFieldLabel for="__ge_birthday">Birthday</EmbedFieldLabel>
+            <EmbedField of={field}>
+              <EmbedFieldLabel of={field}>Birthday</EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
-                id="__ge_birthday"
+                of={field}
                 value={field.value}
                 required
                 type="date"
               />
-              <EmbedFieldError error={field.error.value} />
+              <EmbedFieldError of={field} />
             </EmbedField>
           )}
         </Field>

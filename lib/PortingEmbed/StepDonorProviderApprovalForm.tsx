@@ -54,18 +54,18 @@ export function StepDonorProviderApprovalForm({
         ]}
       >
         {(field, props) => (
-          <EmbedField>
+          <EmbedField of={field}>
             <EmbedFieldInput
               {...props}
-              id="__ge_donorProviderApproval"
+              of={field}
               type="checkbox"
               checked={field.value}
             />
-            <EmbedFieldLabel for="__ge_donorProviderApproval">
+            <EmbedFieldLabel of={field}>
               I have notified my current provider of the number porting and got
               the approval that the number can be ported
             </EmbedFieldLabel>
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>

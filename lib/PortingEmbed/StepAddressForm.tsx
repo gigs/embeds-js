@@ -72,30 +72,30 @@ export function StepAddressForm({
         transform={toTrimmed({ on: 'input' })}
       >
         {(field, props) => (
-          <EmbedField>
-            <EmbedFieldLabel for="__ge_addressLine1">Line 1</EmbedFieldLabel>
+          <EmbedField of={field}>
+            <EmbedFieldLabel of={field}>Line 1</EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
-              id="__ge_addressLine1"
+              of={field}
               type="text"
               value={field.value}
               required
             />
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>
       <Field name="line2" transform={toTrimmed({ on: 'input' })}>
         {(field, props) => (
-          <EmbedField>
-            <EmbedFieldLabel for="__ge_addressLine2">Line 2</EmbedFieldLabel>
+          <EmbedField of={field}>
+            <EmbedFieldLabel of={field}>Line 2</EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
-              id="__ge_addressLine2"
+              of={field}
               type="text"
               value={field.value.value || ''}
             />
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>
@@ -105,16 +105,16 @@ export function StepAddressForm({
         transform={toTrimmed({ on: 'input' })}
       >
         {(field, props) => (
-          <EmbedField>
-            <EmbedFieldLabel for="__ge_addressCity">City</EmbedFieldLabel>
+          <EmbedField of={field}>
+            <EmbedFieldLabel of={field}>City</EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
-              id="__ge_addressCity"
+              of={field}
               type="text"
               value={field.value}
               required
             />
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>
@@ -124,18 +124,16 @@ export function StepAddressForm({
         transform={toTrimmed({ on: 'input' })}
       >
         {(field, props) => (
-          <EmbedField>
-            <EmbedFieldLabel for="__ge_addressPostalCode">
-              Postal Code
-            </EmbedFieldLabel>
+          <EmbedField of={field}>
+            <EmbedFieldLabel of={field}>Postal Code</EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
-              id="__ge_addressPostalCode"
+              of={field}
               type="text"
               value={field.value}
               required
             />
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>
@@ -148,18 +146,16 @@ export function StepAddressForm({
         transform={[toTrimmed({ on: 'input' }), toUpperCase({ on: 'input' })]}
       >
         {(field, props) => (
-          <EmbedField>
-            <EmbedFieldLabel for="__ge_addressState">
-              State (ISO code)
-            </EmbedFieldLabel>
+          <EmbedField of={field}>
+            <EmbedFieldLabel of={field}>State (ISO code)</EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
-              id="__ge_addressState"
+              of={field}
               type="text"
               value={field.value.value || ''}
               required
             />
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>
@@ -172,18 +168,18 @@ export function StepAddressForm({
         transform={[toTrimmed({ on: 'input' }), toUpperCase({ on: 'input' })]}
       >
         {(field, props) => (
-          <EmbedField>
-            <EmbedFieldLabel for="__ge_addressCountry">
+          <EmbedField of={field}>
+            <EmbedFieldLabel of={field}>
               Country (2 letter code)
             </EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
-              id="__ge_addressCountry"
+              of={field}
               type="text"
               value={field.value.value || ''}
               required
             />
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>

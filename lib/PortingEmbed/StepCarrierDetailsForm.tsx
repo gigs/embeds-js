@@ -79,18 +79,16 @@ export function StepCarrierDetailsForm({
           transform={toTrimmed({ on: 'input' })}
         >
           {(field, props) => (
-            <EmbedField>
-              <EmbedFieldLabel for="__ge_accountNumber">
-                Account Number
-              </EmbedFieldLabel>
+            <EmbedField of={field}>
+              <EmbedFieldLabel of={field}>Account Number</EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
-                id="__ge_accountNumber"
+                of={field}
                 type="text"
                 value={field.value}
                 required
               />
-              <EmbedFieldError error={field.error.value} />
+              <EmbedFieldError of={field} />
             </EmbedField>
           )}
         </Field>
@@ -105,18 +103,16 @@ export function StepCarrierDetailsForm({
           }
         >
           {(field, props) => (
-            <EmbedField>
-              <EmbedFieldLabel for="__ge_accountPin">
-                Account PIN
-              </EmbedFieldLabel>
+            <EmbedField of={field}>
+              <EmbedFieldLabel of={field}>Account PIN</EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
-                id="__ge_accountPin"
+                of={field}
                 type="text"
                 placeholder={porting.accountPinExists ? '••••' : undefined}
                 value={field.value}
               />
-              <EmbedFieldError error={field.error.value} />
+              <EmbedFieldError of={field} />
             </EmbedField>
           )}
         </Field>

@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 
 import { portingFactory } from '@/testing/factories/porting'
 
+import { OptionsContext } from '../Options'
 import { StepAddressForm } from '../StepAddressForm'
 
 const wrapper = ({ children }: { children: React.ReactNode }) => {
@@ -22,6 +23,32 @@ const address = {
   state: 'ST',
   country: 'CO',
 }
+
+describe('form id', () => {
+  it('has the default form id', () => {
+    const porting = portingFactory.build({ required: ['address'] })
+    render(<StepAddressForm porting={porting} onSubmit={vi.fn()} />, {
+      wrapper,
+    })
+    expect(screen.getByRole('form')).toHaveAttribute(
+      'id',
+      'gigsPortingEmbedForm',
+    )
+  })
+
+  it('uses a custom form id', () => {
+    const porting = portingFactory.build({ required: ['address'] })
+    render(
+      <OptionsContext.Provider value={{ formId: 'customFormId' }}>
+        <StepAddressForm porting={porting} onSubmit={vi.fn()} />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByRole('form')).toHaveAttribute('id', 'customFormId')
+  })
+})
 
 describe('line1', () => {
   it('exists', async () => {

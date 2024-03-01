@@ -8,6 +8,8 @@ type FieldState = {
   valid: boolean
 }
 
+export const defaultFormId = 'gigsPortingEmbedForm'
+
 export type EmbedOptions = {
   formId?: string
   className?: {

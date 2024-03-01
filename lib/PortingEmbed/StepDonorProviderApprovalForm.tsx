@@ -6,6 +6,7 @@ import { EmbedField } from './EmbedField'
 import { EmbedFieldError } from './EmbedFieldError'
 import { EmbedFieldInput } from './EmbedFieldInput'
 import { EmbedFieldLabel } from './EmbedFieldLabel'
+import { defaultFormId, useEmbedOptions } from './Options'
 import { sanitizeSubmitData } from './sanitizeSubmitData'
 
 export type StepDonorProviderApprovalFormData = {
@@ -23,6 +24,7 @@ export function StepDonorProviderApprovalForm({
   onValidationChange,
   onSubmit,
 }: Props) {
+  const options = useEmbedOptions()
   const [portingForm, { Form, Field }] =
     useForm<StepDonorProviderApprovalFormData>({
       initialValues: {
@@ -38,7 +40,7 @@ export function StepDonorProviderApprovalForm({
 
   return (
     <Form
-      id="gigsPortingEmbedForm" // TODO: make customizable
+      id={options.formId || defaultFormId}
       role="form"
       shouldActive={false}
       onSubmit={async (data) => {

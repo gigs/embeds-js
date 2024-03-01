@@ -12,6 +12,7 @@ import { EmbedField } from './EmbedField'
 import { EmbedFieldError } from './EmbedFieldError'
 import { EmbedFieldInput } from './EmbedFieldInput'
 import { EmbedFieldLabel } from './EmbedFieldLabel'
+import { defaultFormId, useEmbedOptions } from './Options'
 
 export type StepAddressFormData = {
   line1: string
@@ -33,6 +34,7 @@ export function StepAddressForm({
   onValidationChange,
   onSubmit,
 }: Props) {
+  const options = useEmbedOptions()
   const [portingForm, { Form, Field }] = useForm<StepAddressFormData>({
     initialValues: {
       line1: porting.address?.line1 ?? '',
@@ -52,7 +54,7 @@ export function StepAddressForm({
 
   return (
     <Form
-      id="gigsPortingEmbedForm" // TODO: make customizable
+      id={options.formId || defaultFormId}
       role="form"
       onSubmit={(data) => {
         // The address form is always submitted as a whole, never partially.

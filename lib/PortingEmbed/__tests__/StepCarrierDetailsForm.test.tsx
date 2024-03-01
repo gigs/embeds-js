@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 
 import { portingFactory } from '@/testing/factories/porting'
 
+import { OptionsContext } from '../Options'
 import { StepCarrierDetailsForm } from '../StepCarrierDetailsForm'
 
 const wrapper = ({ children }: { children: React.ReactNode }) => {
@@ -13,6 +14,32 @@ const wrapper = ({ children }: { children: React.ReactNode }) => {
     </div>
   )
 }
+
+describe('form id', () => {
+  it('has the default form id', () => {
+    const porting = portingFactory.build({ required: ['accountNumber'] })
+    render(<StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />, {
+      wrapper,
+    })
+    expect(screen.getByRole('form')).toHaveAttribute(
+      'id',
+      'gigsPortingEmbedForm',
+    )
+  })
+
+  it('uses a custom form id', () => {
+    const porting = portingFactory.build({ required: ['accountNumber'] })
+    render(
+      <OptionsContext.Provider value={{ formId: 'customFormId' }}>
+        <StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByRole('form')).toHaveAttribute('id', 'customFormId')
+  })
+})
 
 describe('account number', () => {
   it('is shown when required', () => {

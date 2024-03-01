@@ -6,6 +6,7 @@ import { EmbedField } from './EmbedField'
 import { EmbedFieldError } from './EmbedFieldError'
 import { EmbedFieldInput } from './EmbedFieldInput'
 import { EmbedFieldLabel } from './EmbedFieldLabel'
+import { defaultFormId, useEmbedOptions } from './Options'
 import { sanitizeSubmitData } from './sanitizeSubmitData'
 
 export type StepHolderDetailsFormData = {
@@ -25,6 +26,7 @@ export function StepHolderDetailsForm({
   onValidationChange,
   onSubmit,
 }: Props) {
+  const options = useEmbedOptions()
   const [portingForm, { Form, Field }] = useForm<StepHolderDetailsFormData>({
     initialValues: {
       firstName: porting.firstName ?? '',
@@ -41,7 +43,7 @@ export function StepHolderDetailsForm({
 
   return (
     <Form
-      id="gigsPortingEmbedForm" // TODO: make customizable
+      id={options.formId || defaultFormId}
       role="form"
       shouldDirty // only include changed fields in the onSubmit handler
       onSubmit={(data) => {

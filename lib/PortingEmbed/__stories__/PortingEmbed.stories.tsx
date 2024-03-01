@@ -9,8 +9,7 @@ const meta: Meta<typeof PortingEmbed> = {
   component: PortingEmbed,
   tags: ['autodocs'],
   argTypes: {
-    token: { control: 'text' },
-    initialPorting: { control: 'object' },
+    porting: { control: 'object' },
     onPortingUpdate: { action: 'onPortingUpdate' },
     onValidationChange: { action: 'onValidationChange' },
   },
@@ -30,19 +29,82 @@ export default meta
 
 export const EmptyPorting = {
   args: {
-    porting: portingFactory.build(),
+    porting: portingFactory.build({
+      required: [
+        'accountNumber',
+        'accountPin',
+        'address',
+        'firstName',
+        'lastName',
+        'birthday',
+        'donorProviderApproval',
+      ],
+    }),
   },
 }
 
-export const PrefilledPorting = {
+export const MissingHolderPorting = {
   args: {
     porting: portingFactory
       .params({
+        required: [
+          'accountNumber',
+          'accountPin',
+          'address',
+          'firstName',
+          'lastName',
+          'birthday',
+          'donorProviderApproval',
+        ],
         accountNumber: '1234',
         accountPinExists: true,
-        birthday: '01.01.1990',
-        firstName: 'Jane',
-        lastName: 'Doe',
+      })
+      .build(),
+  },
+}
+
+export const MissingAddressPorting = {
+  args: {
+    porting: portingFactory
+      .params({
+        required: [
+          'accountNumber',
+          'accountPin',
+          'address',
+          'firstName',
+          'lastName',
+          'birthday',
+          'donorProviderApproval',
+        ],
+        accountNumber: '1234',
+        accountPinExists: true,
+        firstName: 'first',
+        lastName: 'last',
+        birthday: '1954-04-29',
+      })
+      .build(),
+  },
+}
+
+export const MissingDonorProviderApprovalPorting = {
+  args: {
+    porting: portingFactory
+      .params({
+        required: [
+          'accountNumber',
+          'accountPin',
+          'address',
+          'firstName',
+          'lastName',
+          'birthday',
+          'donorProviderApproval',
+        ],
+        accountNumber: '1234',
+        accountPinExists: true,
+        firstName: 'first',
+        lastName: 'last',
+        birthday: '1954-04-29',
+        address: {},
       })
       .build(),
   },

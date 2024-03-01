@@ -8,78 +8,158 @@ import { PortingForm } from '../PortingForm'
 const wrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
-      {children}
+      <div data-testid="embed">{children}</div>
       <button form="gigsPortingEmbedForm">Submit</button>
     </div>
   )
 }
 
-it('can enter and submit', async () => {
-  const user = userEvent.setup()
+const validationChange = vi.fn()
+const submit = vi.fn()
+
+it('renders nothing if there are no steps left', () => {
   const porting = portingFactory.build()
-  const submit = vi.fn()
-  render(<PortingForm porting={porting} onSubmit={submit} />, { wrapper })
+  render(
+    <PortingForm
+      porting={porting}
+      onValidationChange={validationChange}
+      onSubmit={submit}
+    />,
+    { wrapper },
+  )
 
-  await user.type(screen.getByLabelText('Account Number'), '1234')
-  await user.type(screen.getByLabelText('Account PIN'), '0000')
-  await user.type(screen.getByLabelText('Birthday'), '01.01.1990')
-  await user.type(screen.getByLabelText('First Name'), 'Jerry')
-  await user.type(screen.getByLabelText('Last Name'), 'Seinfeld')
-  await user.click(screen.getByRole('button', { name: 'Submit' }))
-
-  expect(submit).toHaveBeenCalledWith({
-    accountNumber: '1234',
-    accountPin: '0000',
-    birthday: '01.01.1990',
-    firstName: 'Jerry',
-    lastName: 'Seinfeld',
-  })
+  expect(screen.getByTestId('embed')).toBeEmptyDOMElement()
 })
 
-describe('with existing porting fields', () => {
-  it('prefills the inputs', async () => {
-    const porting = portingFactory.build({
-      accountNumber: '1234',
-      accountPinExists: true,
-      birthday: '01.01.1990',
-      firstName: 'Jerry',
-      lastName: 'Seinfeld',
-    })
-    const submit = vi.fn()
-    render(<PortingForm porting={porting} onSubmit={submit} />, { wrapper })
-
-    expect(screen.getByLabelText('Account Number')).toHaveValue('1234')
-    expect(screen.getByLabelText('Birthday')).toHaveValue('01.01.1990')
-    expect(screen.getByLabelText('First Name')).toHaveValue('Jerry')
-    expect(screen.getByLabelText('Last Name')).toHaveValue('Seinfeld')
-
-    // The account pin is not stored and cannot be pre-filled.
-    // The presence of the account pin is instead indicated with a placeholder.
-    expect(screen.getByLabelText('Account PIN')).toHaveValue('')
-    expect(screen.getByLabelText('Account PIN')).toHaveAttribute(
-      'placeholder',
-      '••••',
-    )
+describe('carrier details', () => {
+  const porting = portingFactory.build({
+    required: ['accountNumber', 'accountPin'],
   })
 
-  it('only submits changed fields', async () => {
-    const user = userEvent.setup()
-    const porting = portingFactory.build({
-      accountNumber: '1234',
-      accountPinExists: true,
-      birthday: '01.01.1990',
-      firstName: 'Jerry',
-      lastName: 'Seinfeld',
-    })
-    const submit = vi.fn()
-    render(<PortingForm porting={porting} onSubmit={submit} />, { wrapper })
+  it('renders the corresponding form', () => {
+    render(
+      <PortingForm
+        porting={porting}
+        onValidationChange={validationChange}
+        onSubmit={submit}
+      />,
+      { wrapper },
+    )
+    expect(screen.getByRole('form')).toBeInTheDocument()
+    expect(screen.getByLabelText('Account Number')).toBeInTheDocument()
+    expect(screen.getByLabelText('Account PIN')).toBeInTheDocument()
+  })
 
-    await user.clear(screen.getByLabelText('Account Number'))
-    await user.type(screen.getByLabelText('Account Number'), '5678')
+  it('forwards the submitted data', async () => {
+    const user = userEvent.setup()
+    render(
+      <PortingForm
+        porting={porting}
+        onValidationChange={validationChange}
+        onSubmit={submit}
+      />,
+      { wrapper },
+    )
+
+    await user.type(screen.getByLabelText('Account Number'), '123456')
+    await user.type(screen.getByLabelText('Account PIN'), '1234')
     await user.click(screen.getByRole('button', { name: 'Submit' }))
 
     expect(submit).toHaveBeenCalledWith({
-      accountNumber: '5678',
+      accountNumber: '123456',
+      accountPin: '1234',
+    })
+  })
+})
+
+describe('holder details', () => {
+  const porting = portingFactory.build({
+    required: ['firstName', 'lastName', 'birthday'],
+  })
+
+  it('renders the corresponding form', () => {
+    render(
+      <PortingForm
+        porting={porting}
+        onValidationChange={validationChange}
+        onSubmit={submit}
+      />,
+      { wrapper },
+    )
+    expect(screen.getByRole('form')).toBeInTheDocument()
+    expect(screen.getByLabelText('First Name')).toBeInTheDocument()
+    expect(screen.getByLabelText('Last Name')).toBeInTheDocument()
+    expect(screen.getByLabelText('Birthday')).toBeInTheDocument()
+  })
+
+  it('forwards the submitted data', async () => {
+    const user = userEvent.setup()
+    render(
+      <PortingForm
+        porting={porting}
+        onValidationChange={validationChange}
+        onSubmit={submit}
+      />,
+      { wrapper },
+    )
+
+    await user.type(screen.getByLabelText('First Name'), 'first')
+    await user.type(screen.getByLabelText('Last Name'), 'last')
+    await user.type(screen.getByLabelText('Birthday'), '1954-04-29')
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(submit).toHaveBeenCalledWith({
+      firstName: 'first',
+      lastName: 'last',
+      birthday: '1954-04-29',
+    })
+  })
+})
+
+describe('address', () => {
+  const porting = portingFactory.build({
+    required: ['address'],
+  })
+
+  it('renders the corresponding form', () => {
+    render(
+      <PortingForm
+        porting={porting}
+        onValidationChange={validationChange}
+        onSubmit={submit}
+      />,
+      { wrapper },
+    )
+    expect(screen.getByRole('form')).toBeInTheDocument()
+    expect(screen.getByLabelText('Line 1')).toBeInTheDocument()
+  })
+
+  it('forwards the submitted data', async () => {
+    const user = userEvent.setup()
+    render(
+      <PortingForm
+        porting={porting}
+        onValidationChange={validationChange}
+        onSubmit={submit}
+      />,
+      { wrapper },
+    )
+
+    await user.type(screen.getByLabelText('Line 1'), 'line1')
+    await user.type(screen.getByLabelText('City'), 'city')
+    await user.type(screen.getByLabelText('Postal Code'), 'pc123')
+    await user.type(screen.getByLabelText(/Country/), 'co')
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(submit).toHaveBeenCalledWith({
+      address: {
+        line1: 'line1',
+        line2: null,
+        city: 'city',
+        postalCode: 'pc123',
+        state: null,
+        country: 'CO',
+      },
     })
   })
 })

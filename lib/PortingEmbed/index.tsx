@@ -26,10 +26,14 @@ type SubmitStatusEvent =
 
 type CompletedEvent = { porting: Porting }
 
+type Step = ReturnType<typeof wizardStep>
+type StepChangeEvent = { prevStep: Step; nextStep: Step }
+
 type Events = {
   validationChange: ValidationChangeEvent
   submitStatus: SubmitStatusEvent
   completed: CompletedEvent
+  stepChange: StepChangeEvent
 }
 
 /**
@@ -98,16 +102,21 @@ export async function PortingEmbed(
     emitter.emit('submitStatus', { status: 'loading' })
 
     try {
-      porting = await patchPorting(porting.id, updatedFields, {
+      const newPorting = await patchPorting(porting.id, updatedFields, {
         token,
         project,
       })
       emitter.emit('submitStatus', { status: 'success', porting })
 
-      const step = wizardStep(porting)
-      if (step === null) {
-        emitter.emit('completed', { porting })
+      const nextStep = wizardStep(newPorting)
+      const prevStep = wizardStep(porting)
+      emitter.emit('stepChange', { nextStep, prevStep })
+
+      if (nextStep === null) {
+        emitter.emit('completed', { porting: newPorting })
       }
+
+      porting = newPorting
     } catch (error) {
       emitter.emit('submitStatus', { status: 'error', error })
     } finally {
@@ -120,7 +129,7 @@ export async function PortingEmbed(
 
     render(
       <PortingEmbedComponent
-        {...options}
+        options={options}
         porting={porting}
         onValidationChange={handleValidationChange}
         onPortingUpdate={handlePortingUpdate}
@@ -187,5 +196,19 @@ export async function PortingEmbed(
 
     /** Remove event listener. */
     off: emitter.off.bind(emitter),
+
+    /**
+     * Get the current step in the number porting wizard.
+     *
+     * @example
+     * const step = embed.currentStep()
+     *
+     * @returns Name of the current step, one of: `"holderDetails"`, `"carrierDetails"`,
+     *  `"address"`, `"donorProviderApprovale", or `null`. `null` means there are
+     *   no steps anymore.
+     */
+    currentStep() {
+      return wizardStep(porting)
+    },
   }
 }

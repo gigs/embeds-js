@@ -6,6 +6,7 @@ import { EmbedField } from './EmbedField'
 import { EmbedFieldError } from './EmbedFieldError'
 import { EmbedFieldInput } from './EmbedFieldInput'
 import { EmbedFieldLabel } from './EmbedFieldLabel'
+import { defaultFormId, useEmbedOptions } from './Options'
 import { sanitizeSubmitData } from './sanitizeSubmitData'
 
 export type StepHolderDetailsFormData = {
@@ -25,7 +26,8 @@ export function StepHolderDetailsForm({
   onValidationChange,
   onSubmit,
 }: Props) {
-  const [portingForm, { Form, Field }] = useForm<StepHolderDetailsFormData>({
+  const options = useEmbedOptions()
+  const [form, { Form, Field }] = useForm<StepHolderDetailsFormData>({
     initialValues: {
       firstName: porting.firstName ?? '',
       lastName: porting.lastName ?? '',
@@ -35,14 +37,24 @@ export function StepHolderDetailsForm({
   })
 
   useSignalEffect(() => {
-    const isValid = !portingForm.invalid.value
+    const isValid = !form.invalid.value
     onValidationChange?.({ isValid })
   })
 
+  const customClassName =
+    options.className?.form?.({
+      name: 'holderDetails',
+      dirty: form.dirty.value,
+      valid: !form.invalid.value,
+      submitting: form.submitting.value,
+      touched: form.touched.value,
+    }) || ''
+
   return (
     <Form
-      id="gigsPortingEmbedForm" // TODO: make customizable
+      id={options.formId || defaultFormId}
       role="form"
+      className={`GigsEmbeds GigsPortingEmbed GigsEmbeds-form ${customClassName}`}
       shouldDirty // only include changed fields in the onSubmit handler
       onSubmit={(data) => {
         const sanitizedData = sanitizeSubmitData(data)
@@ -56,16 +68,16 @@ export function StepHolderDetailsForm({
           transform={toTrimmed({ on: 'input' })}
         >
           {(field, props) => (
-            <EmbedField>
-              <EmbedFieldLabel for="__ge_firstName">First Name</EmbedFieldLabel>
+            <EmbedField of={field}>
+              <EmbedFieldLabel of={field}>First Name</EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
-                id="__ge_firstName"
+                of={field}
                 type="text"
                 value={field.value}
                 required
               />
-              <EmbedFieldError error={field.error.value} />
+              <EmbedFieldError of={field} />
             </EmbedField>
           )}
         </Field>
@@ -77,16 +89,16 @@ export function StepHolderDetailsForm({
           transform={toTrimmed({ on: 'input' })}
         >
           {(field, props) => (
-            <EmbedField>
-              <EmbedFieldLabel for="__ge_lastName">Last Name</EmbedFieldLabel>
+            <EmbedField of={field}>
+              <EmbedFieldLabel of={field}>Last Name</EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
-                id="__ge_lastName"
+                of={field}
                 type="text"
                 value={field.value}
                 required
               />
-              <EmbedFieldError error={field.error.value} />
+              <EmbedFieldError of={field} />
             </EmbedField>
           )}
         </Field>
@@ -98,16 +110,16 @@ export function StepHolderDetailsForm({
           transform={toTrimmed({ on: 'input' })}
         >
           {(field, props) => (
-            <EmbedField>
-              <EmbedFieldLabel for="__ge_birthday">Birthday</EmbedFieldLabel>
+            <EmbedField of={field}>
+              <EmbedFieldLabel of={field}>Birthday</EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
-                id="__ge_birthday"
+                of={field}
                 value={field.value}
                 required
                 type="date"
               />
-              <EmbedFieldError error={field.error.value} />
+              <EmbedFieldError of={field} />
             </EmbedField>
           )}
         </Field>

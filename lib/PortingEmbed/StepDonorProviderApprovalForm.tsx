@@ -6,6 +6,7 @@ import { EmbedField } from './EmbedField'
 import { EmbedFieldError } from './EmbedFieldError'
 import { EmbedFieldInput } from './EmbedFieldInput'
 import { EmbedFieldLabel } from './EmbedFieldLabel'
+import { defaultFormId, useEmbedOptions } from './Options'
 import { sanitizeSubmitData } from './sanitizeSubmitData'
 
 export type StepDonorProviderApprovalFormData = {
@@ -23,23 +24,33 @@ export function StepDonorProviderApprovalForm({
   onValidationChange,
   onSubmit,
 }: Props) {
-  const [portingForm, { Form, Field }] =
-    useForm<StepDonorProviderApprovalFormData>({
-      initialValues: {
-        donorProviderApproval: porting.donorProviderApproval ?? false,
-      },
-      validateOn: 'change',
-    })
+  const options = useEmbedOptions()
+  const [form, { Form, Field }] = useForm<StepDonorProviderApprovalFormData>({
+    initialValues: {
+      donorProviderApproval: porting.donorProviderApproval ?? false,
+    },
+    validateOn: 'change',
+  })
 
   useSignalEffect(() => {
-    const isValid = !portingForm.invalid.value
+    const isValid = !form.invalid.value
     onValidationChange?.({ isValid })
   })
 
+  const customClassName =
+    options.className?.form?.({
+      name: 'donorProviderApproval',
+      dirty: form.dirty.value,
+      valid: !form.invalid.value,
+      submitting: form.submitting.value,
+      touched: form.touched.value,
+    }) || ''
+
   return (
     <Form
-      id="gigsPortingEmbedForm" // TODO: make customizable
+      id={options.formId || defaultFormId}
       role="form"
+      className={`GigsEmbeds GigsPortingEmbed GigsEmbeds-form ${customClassName}`}
       shouldActive={false}
       onSubmit={async (data) => {
         const sanitizedData = sanitizeSubmitData(data)
@@ -54,18 +65,18 @@ export function StepDonorProviderApprovalForm({
         ]}
       >
         {(field, props) => (
-          <EmbedField>
+          <EmbedField of={field}>
             <EmbedFieldInput
               {...props}
-              id="__ge_donorProviderApproval"
+              of={field}
               type="checkbox"
               checked={field.value}
             />
-            <EmbedFieldLabel for="__ge_donorProviderApproval">
+            <EmbedFieldLabel of={field}>
               I have notified my current provider of the number porting and got
               the approval that the number can be ported
             </EmbedFieldLabel>
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>

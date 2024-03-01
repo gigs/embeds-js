@@ -12,6 +12,7 @@ import { EmbedField } from './EmbedField'
 import { EmbedFieldError } from './EmbedFieldError'
 import { EmbedFieldInput } from './EmbedFieldInput'
 import { EmbedFieldLabel } from './EmbedFieldLabel'
+import { defaultFormId, useEmbedOptions } from './Options'
 
 export type StepAddressFormData = {
   line1: string
@@ -33,7 +34,8 @@ export function StepAddressForm({
   onValidationChange,
   onSubmit,
 }: Props) {
-  const [portingForm, { Form, Field }] = useForm<StepAddressFormData>({
+  const options = useEmbedOptions()
+  const [form, { Form, Field }] = useForm<StepAddressFormData>({
     initialValues: {
       line1: porting.address?.line1 ?? '',
       line2: porting.address?.line2 ?? null,
@@ -45,15 +47,25 @@ export function StepAddressForm({
     validateOn: 'blur',
   })
 
+  const customClassName =
+    options.className?.form?.({
+      name: 'address',
+      dirty: form.dirty.value,
+      valid: !form.invalid.value,
+      submitting: form.submitting.value,
+      touched: form.touched.value,
+    }) || ''
+
   useSignalEffect(() => {
-    const isValid = !portingForm.invalid.value
+    const isValid = !form.invalid.value
     onValidationChange?.({ isValid })
   })
 
   return (
     <Form
-      id="gigsPortingEmbedForm" // TODO: make customizable
+      id={options.formId || defaultFormId}
       role="form"
+      className={`GigsEmbeds GigsPortingEmbed GigsEmbeds-form ${customClassName}`}
       onSubmit={(data) => {
         // The address form is always submitted as a whole, never partially.
         // line2 and state are optional and must be converted to null if empty.
@@ -72,30 +84,30 @@ export function StepAddressForm({
         transform={toTrimmed({ on: 'input' })}
       >
         {(field, props) => (
-          <EmbedField>
-            <EmbedFieldLabel for="__ge_addressLine1">Line 1</EmbedFieldLabel>
+          <EmbedField of={field}>
+            <EmbedFieldLabel of={field}>Line 1</EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
-              id="__ge_addressLine1"
+              of={field}
               type="text"
               value={field.value}
               required
             />
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>
       <Field name="line2" transform={toTrimmed({ on: 'input' })}>
         {(field, props) => (
-          <EmbedField>
-            <EmbedFieldLabel for="__ge_addressLine2">Line 2</EmbedFieldLabel>
+          <EmbedField of={field}>
+            <EmbedFieldLabel of={field}>Line 2</EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
-              id="__ge_addressLine2"
+              of={field}
               type="text"
               value={field.value.value || ''}
             />
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>
@@ -105,16 +117,16 @@ export function StepAddressForm({
         transform={toTrimmed({ on: 'input' })}
       >
         {(field, props) => (
-          <EmbedField>
-            <EmbedFieldLabel for="__ge_addressCity">City</EmbedFieldLabel>
+          <EmbedField of={field}>
+            <EmbedFieldLabel of={field}>City</EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
-              id="__ge_addressCity"
+              of={field}
               type="text"
               value={field.value}
               required
             />
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>
@@ -124,18 +136,16 @@ export function StepAddressForm({
         transform={toTrimmed({ on: 'input' })}
       >
         {(field, props) => (
-          <EmbedField>
-            <EmbedFieldLabel for="__ge_addressPostalCode">
-              Postal Code
-            </EmbedFieldLabel>
+          <EmbedField of={field}>
+            <EmbedFieldLabel of={field}>Postal Code</EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
-              id="__ge_addressPostalCode"
+              of={field}
               type="text"
               value={field.value}
               required
             />
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>
@@ -148,18 +158,16 @@ export function StepAddressForm({
         transform={[toTrimmed({ on: 'input' }), toUpperCase({ on: 'input' })]}
       >
         {(field, props) => (
-          <EmbedField>
-            <EmbedFieldLabel for="__ge_addressState">
-              State (ISO code)
-            </EmbedFieldLabel>
+          <EmbedField of={field}>
+            <EmbedFieldLabel of={field}>State (ISO code)</EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
-              id="__ge_addressState"
+              of={field}
               type="text"
               value={field.value.value || ''}
               required
             />
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>
@@ -172,18 +180,18 @@ export function StepAddressForm({
         transform={[toTrimmed({ on: 'input' }), toUpperCase({ on: 'input' })]}
       >
         {(field, props) => (
-          <EmbedField>
-            <EmbedFieldLabel for="__ge_addressCountry">
+          <EmbedField of={field}>
+            <EmbedFieldLabel of={field}>
               Country (2 letter code)
             </EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
-              id="__ge_addressCountry"
+              of={field}
               type="text"
               value={field.value.value || ''}
               required
             />
-            <EmbedFieldError error={field.error.value} />
+            <EmbedFieldError of={field} />
           </EmbedField>
         )}
       </Field>

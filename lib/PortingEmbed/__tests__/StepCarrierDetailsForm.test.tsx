@@ -15,32 +15,6 @@ const wrapper = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-describe('form id', () => {
-  it('has the default form id', () => {
-    const porting = portingFactory.build({ required: ['accountNumber'] })
-    render(<StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />, {
-      wrapper,
-    })
-    expect(screen.getByRole('form')).toHaveAttribute(
-      'id',
-      'gigsPortingEmbedForm',
-    )
-  })
-
-  it('uses a custom form id', () => {
-    const porting = portingFactory.build({ required: ['accountNumber'] })
-    render(
-      <OptionsContext.Provider value={{ formId: 'customFormId' }}>
-        <StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />
-      </OptionsContext.Provider>,
-      {
-        wrapper,
-      },
-    )
-    expect(screen.getByRole('form')).toHaveAttribute('id', 'customFormId')
-  })
-})
-
 describe('account number', () => {
   it('is shown when required', () => {
     const porting = portingFactory.build({ required: ['accountNumber'] })
@@ -265,5 +239,173 @@ describe('account pin', () => {
     expect(validate).toHaveBeenLastCalledWith({ isValid: false })
     await user.type(screen.getByLabelText('Account PIN'), '123456')
     expect(validate).toHaveBeenLastCalledWith({ isValid: true })
+  })
+})
+
+describe('form id', () => {
+  it('has the default form id', () => {
+    const porting = portingFactory.build({ required: ['accountNumber'] })
+    render(<StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />, {
+      wrapper,
+    })
+    expect(screen.getByRole('form')).toHaveAttribute(
+      'id',
+      'gigsPortingEmbedForm',
+    )
+  })
+
+  it('uses a custom form id', () => {
+    const porting = portingFactory.build({ required: ['accountNumber'] })
+    render(
+      <OptionsContext.Provider value={{ formId: 'customFormId' }}>
+        <StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByRole('form')).toHaveAttribute('id', 'customFormId')
+  })
+})
+
+describe('form class names', () => {
+  it('includes default class names', () => {
+    const porting = portingFactory.build({ required: ['accountNumber'] })
+    render(<StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />, {
+      wrapper,
+    })
+    expect(screen.getByRole('form')).toHaveClass(
+      'GigsEmbeds',
+      'GigsPortingEmbed',
+      'GigsEmbeds-form',
+    )
+  })
+
+  it('allows to specify a custom class name', () => {
+    const porting = portingFactory.build({ required: ['accountNumber'] })
+    render(
+      <OptionsContext.Provider
+        value={{ className: { form: () => 'custom-class-name' } }}
+      >
+        <StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByRole('form')).toHaveClass('custom-class-name')
+  })
+
+  it('passes the form name to the custom class name', () => {
+    const porting = portingFactory.build({ required: ['accountNumber'] })
+    render(
+      <OptionsContext.Provider
+        value={{ className: { form: ({ name }) => `custom-class-${name}` } }}
+      >
+        <StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByRole('form')).toHaveClass('custom-class-carrierDetails')
+  })
+
+  it('allows a custom class for the touched state', async () => {
+    const user = userEvent.setup()
+    const porting = portingFactory.build({ required: ['accountNumber'] })
+    render(
+      <OptionsContext.Provider
+        value={{
+          className: {
+            form: ({ touched }) =>
+              `custom-class-${touched ? 'touched' : 'untouched'}`,
+          },
+        }}
+      >
+        <StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByRole('form')).toHaveClass('custom-class-untouched')
+    await user.click(screen.getByLabelText('Account Number'))
+    await user.tab()
+    expect(screen.getByRole('form')).toHaveClass('custom-class-touched')
+  })
+
+  it('allows a custom class for the dirty state', async () => {
+    const user = userEvent.setup()
+    const porting = portingFactory.build({ required: ['accountNumber'] })
+    render(
+      <OptionsContext.Provider
+        value={{
+          className: {
+            form: ({ dirty }) => `custom-class-${dirty ? 'dirty' : 'undirty'}`,
+          },
+        }}
+      >
+        <StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByRole('form')).toHaveClass('custom-class-undirty')
+    await user.type(screen.getByLabelText('Account Number'), '1')
+    expect(screen.getByRole('form')).toHaveClass('custom-class-dirty')
+  })
+
+  it('allows a custom class for the valid state', async () => {
+    const user = userEvent.setup()
+    const porting = portingFactory.build({ required: ['accountNumber'] })
+    render(
+      <OptionsContext.Provider
+        value={{
+          className: {
+            form: ({ valid }) => `custom-class-${valid ? 'valid' : 'invalid'}`,
+          },
+        }}
+      >
+        <StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByRole('form')).toHaveClass('custom-class-valid')
+    await user.click(screen.getByLabelText('Account Number'))
+    await user.tab()
+    expect(screen.getByRole('form')).toHaveClass('custom-class-invalid')
+  })
+
+  it('allows a custom class for the submitting state', async () => {
+    const user = userEvent.setup()
+    const porting = portingFactory.build({ required: ['accountNumber'] })
+    render(
+      <OptionsContext.Provider
+        value={{
+          className: {
+            form: ({ submitting }) =>
+              `custom-class-${submitting ? 'submitting' : 'idle'}`,
+          },
+        }}
+      >
+        <StepCarrierDetailsForm
+          porting={porting}
+          onSubmit={async () => {
+            await new Promise<1>((resolve) => setTimeout(() => resolve(1), 1))
+          }}
+        />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByRole('form')).toHaveClass('custom-class-idle')
+    await user.type(screen.getByLabelText('Account Number'), '123456')
+    await user.click(screen.getByRole('button'))
+    expect(screen.getByRole('form')).toHaveClass('custom-class-submitting')
   })
 })

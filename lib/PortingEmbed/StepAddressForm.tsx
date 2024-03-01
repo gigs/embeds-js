@@ -35,7 +35,7 @@ export function StepAddressForm({
   onSubmit,
 }: Props) {
   const options = useEmbedOptions()
-  const [portingForm, { Form, Field }] = useForm<StepAddressFormData>({
+  const [form, { Form, Field }] = useForm<StepAddressFormData>({
     initialValues: {
       line1: porting.address?.line1 ?? '',
       line2: porting.address?.line2 ?? null,
@@ -47,8 +47,17 @@ export function StepAddressForm({
     validateOn: 'blur',
   })
 
+  const customClassName =
+    options.className?.form?.({
+      name: 'address',
+      dirty: form.dirty.value,
+      valid: !form.invalid.value,
+      submitting: form.submitting.value,
+      touched: form.touched.value,
+    }) || ''
+
   useSignalEffect(() => {
-    const isValid = !portingForm.invalid.value
+    const isValid = !form.invalid.value
     onValidationChange?.({ isValid })
   })
 
@@ -56,6 +65,7 @@ export function StepAddressForm({
     <Form
       id={options.formId || defaultFormId}
       role="form"
+      className={`GigsEmbeds GigsPortingEmbed GigsEmbeds-form ${customClassName}`}
       onSubmit={(data) => {
         // The address form is always submitted as a whole, never partially.
         // line2 and state are optional and must be converted to null if empty.

@@ -27,7 +27,7 @@ export function StepHolderDetailsForm({
   onSubmit,
 }: Props) {
   const options = useEmbedOptions()
-  const [portingForm, { Form, Field }] = useForm<StepHolderDetailsFormData>({
+  const [form, { Form, Field }] = useForm<StepHolderDetailsFormData>({
     initialValues: {
       firstName: porting.firstName ?? '',
       lastName: porting.lastName ?? '',
@@ -37,14 +37,24 @@ export function StepHolderDetailsForm({
   })
 
   useSignalEffect(() => {
-    const isValid = !portingForm.invalid.value
+    const isValid = !form.invalid.value
     onValidationChange?.({ isValid })
   })
+
+  const customClassName =
+    options.className?.form?.({
+      name: 'holderDetails',
+      dirty: form.dirty.value,
+      valid: !form.invalid.value,
+      submitting: form.submitting.value,
+      touched: form.touched.value,
+    }) || ''
 
   return (
     <Form
       id={options.formId || defaultFormId}
       role="form"
+      className={`GigsEmbeds GigsPortingEmbed GigsEmbeds-form ${customClassName}`}
       shouldDirty // only include changed fields in the onSubmit handler
       onSubmit={(data) => {
         const sanitizedData = sanitizeSubmitData(data)

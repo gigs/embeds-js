@@ -25,23 +25,32 @@ export function StepDonorProviderApprovalForm({
   onSubmit,
 }: Props) {
   const options = useEmbedOptions()
-  const [portingForm, { Form, Field }] =
-    useForm<StepDonorProviderApprovalFormData>({
-      initialValues: {
-        donorProviderApproval: porting.donorProviderApproval ?? false,
-      },
-      validateOn: 'change',
-    })
+  const [form, { Form, Field }] = useForm<StepDonorProviderApprovalFormData>({
+    initialValues: {
+      donorProviderApproval: porting.donorProviderApproval ?? false,
+    },
+    validateOn: 'change',
+  })
 
   useSignalEffect(() => {
-    const isValid = !portingForm.invalid.value
+    const isValid = !form.invalid.value
     onValidationChange?.({ isValid })
   })
+
+  const customClassName =
+    options.className?.form?.({
+      name: 'donorProviderApproval',
+      dirty: form.dirty.value,
+      valid: !form.invalid.value,
+      submitting: form.submitting.value,
+      touched: form.touched.value,
+    }) || ''
 
   return (
     <Form
       id={options.formId || defaultFormId}
       role="form"
+      className={`GigsEmbeds GigsPortingEmbed GigsEmbeds-form ${customClassName}`}
       shouldActive={false}
       onSubmit={async (data) => {
         const sanitizedData = sanitizeSubmitData(data)

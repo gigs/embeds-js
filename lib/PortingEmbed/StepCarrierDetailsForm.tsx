@@ -33,6 +33,15 @@ export function StepCarrierDetailsForm({
     validateOn: 'blur',
   })
 
+  const customClassName =
+    options.className?.form?.({
+      name: 'carrierDetails',
+      dirty: form.dirty.value,
+      valid: !form.invalid.value,
+      submitting: form.submitting.value,
+      touched: form.touched.value,
+    }) || ''
+
   useSignalEffect(() => {
     const isValid = !form.invalid.value
     onValidationChange?.({ isValid })
@@ -42,6 +51,7 @@ export function StepCarrierDetailsForm({
     <Form
       id={options.formId || defaultFormId}
       role="form"
+      className={`GigsEmbeds GigsPortingEmbed GigsEmbeds-form ${customClassName}`}
       shouldDirty // only include changed fields in the onSubmit handler
       onSubmit={(data) => {
         const existingAccountPinWasTouched =

@@ -21,7 +21,15 @@ function App() {
       const csn = formData.get('csn')!.toString()
       const project = formData.get('project')!.toString()
 
-      const embed = await PortingEmbed(JSON.parse(csn), { project })
+      const embed = await PortingEmbed(JSON.parse(csn), {
+        project,
+        options: {
+          className: {
+            field: ({ valid }) =>
+              valid ? 'hey-custom-class' : 'hey-this-is-invalid',
+          },
+        },
+      })
       setLoading('loaded')
 
       embed.mount($portingEmbedEl.current!)

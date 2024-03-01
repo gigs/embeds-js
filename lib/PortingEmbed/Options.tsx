@@ -8,11 +8,20 @@ type FieldState = {
   valid: boolean
 }
 
+type FormState = {
+  name: string
+  dirty: boolean
+  valid: boolean
+  submitting: boolean
+  touched: boolean
+}
+
 export const defaultFormId = 'gigsPortingEmbedForm'
 
 export type EmbedOptions = {
   formId?: string
   className?: {
+    form?: (state: FormState) => string
     field?: (state: FieldState) => string
     input?: (state: FieldState) => string
     label?: (state: FieldState) => string

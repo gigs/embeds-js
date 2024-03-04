@@ -24,7 +24,7 @@ export function PortingEmbed({
 }: PortingEmbedProps) {
   return (
     <OptionsContext.Provider value={options || {}}>
-      <div className="__ge_portingRoot">
+      <div className="__ge_portingRoot GigsEmbeds-root">
         <PortingForm
           porting={porting}
           onValidationChange={onValidationChange}

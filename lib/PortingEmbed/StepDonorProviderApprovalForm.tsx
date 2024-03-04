@@ -66,16 +66,18 @@ export function StepDonorProviderApprovalForm({
       >
         {(field, props) => (
           <EmbedField of={field}>
-            <EmbedFieldInput
-              {...props}
-              of={field}
-              type="checkbox"
-              checked={field.value}
-            />
-            <EmbedFieldLabel of={field}>
-              I have notified my current provider of the number porting and got
-              the approval that the number can be ported
-            </EmbedFieldLabel>
+            <div className="GigsEmbeds GigsPortingEmbed GigsEmbeds-checkbox">
+              <EmbedFieldInput
+                {...props}
+                of={field}
+                type="checkbox"
+                checked={field.value}
+              />
+              <EmbedFieldLabel of={field}>
+                I have notified my current provider of the number porting and
+                got the approval that the number can be ported
+              </EmbedFieldLabel>
+            </div>
             <EmbedFieldError of={field} />
           </EmbedField>
         )}

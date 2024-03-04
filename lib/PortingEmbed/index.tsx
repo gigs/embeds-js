@@ -23,18 +23,19 @@ type SubmitStatusEvent =
   | { status: 'loading' }
   | { status: 'success'; porting: Porting }
   | { status: 'error'; error: unknown }
-
 type CompletedEvent = { porting: Porting }
-
-type Step = ReturnType<typeof wizardStep>
 type StepChangeEvent = { prevStep: Step; nextStep: Step }
 
-type Events = {
+export type Step = ReturnType<typeof wizardStep>
+
+export type Events = {
   validationChange: ValidationChangeEvent
   submitStatus: SubmitStatusEvent
   completed: CompletedEvent
   stepChange: StepChangeEvent
 }
+
+export type PortingEmbedInstance = Awaited<ReturnType<typeof PortingEmbed>>
 
 /**
  * Initializes an embed to complete a porting (port-in a number). Requires an

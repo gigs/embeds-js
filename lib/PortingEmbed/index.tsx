@@ -23,13 +23,12 @@ type SubmitStatusEvent =
   | { status: 'loading' }
   | { status: 'success'; porting: Porting }
   | { status: 'error'; error: unknown }
-
 type CompletedEvent = { porting: Porting }
-
-type Step = ReturnType<typeof wizardStep>
 type StepChangeEvent = { prevStep: Step; nextStep: Step }
 
-type Events = {
+export type Step = ReturnType<typeof wizardStep>
+
+export type Events = {
   validationChange: ValidationChangeEvent
   submitStatus: SubmitStatusEvent
   completed: CompletedEvent

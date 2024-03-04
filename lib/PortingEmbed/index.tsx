@@ -36,6 +36,8 @@ type Events = {
   stepChange: StepChangeEvent
 }
 
+export type PortingEmbedInstance = Awaited<ReturnType<typeof PortingEmbed>>
+
 /**
  * Initializes an embed to complete a porting (port-in a number). Requires an
  * authenticated ConnectSession. After initialization, the embed can be mounted

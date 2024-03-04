@@ -61,6 +61,7 @@ embed.on('completed', ({ porting }) => {
   - [Using a different form id](#using-a-different-form-id)
   - [Updating options](#updating-options)
   - [Unmount the embed](#unmount-the-embed)
+  - [Usage with React](#usage-with-react)
 - [Reference](#reference)
   - [Initializing the Porting Embed](#initializing-the-porting-embed)
     - [`connectSession`](#connectsession)
@@ -286,6 +287,74 @@ app.onBackNavigation(() => {
 
 See also:
 - [`embed.unmount()`](#embedunmount)
+
+### Usage with React
+
+```js
+export function App() {
+  const $mount = useRef<HTMLDivElement>(null)
+  const [status, setStatus] = useState('initializing')
+  const [step, setStep] = useState(null)
+  const [embed, setEmbed] = useState<PortingEmbedInstance>()
+
+  useEffect(() => {
+    async function main() {
+      const session = await fetch('/connectSessionForCurrentPorting')
+        .then(res => res.json())
+      
+      const embed = await PortingEmbed(session)
+      setEmbed(embed)
+    }
+
+    main()
+  }, [])
+
+  useEffect(() => {
+    if (!embed) return
+
+    setStatus('loaded')
+    setStep(embed.currentStep())
+    embed.mount($mount.current)
+
+    const handleStepChange = ({ nextStep }) => setStep(nextStep)
+    const handleCompleted = ({ porting }) => {
+      router.push(`/completed?porting=${porting.id}`)
+    }
+    const handleSubmitStatus = ({ status }) => {
+      if (status === 'loading') {
+        setStatus('submitting')
+      } else {
+        setStatus('loading')
+      }
+    }
+
+    embed.on('stepChange', handleStepChange)
+    embed.on('completed', handleCompleted)
+    embed.on('submitStatus', handleSubmitStatus)
+
+    return () => {
+      embed.off('stepChange', handleStepChange)
+      embed.off('completed', handleCompleted)
+      embed.off('submitStatus', handleSubmitStatus)
+      embed.unmount()
+    }
+  }, [embed])
+
+  return (
+    <>
+      <StepTitle step={step} />
+      {status === 'initializing' && <Loading />}
+      <div ref={$mount} />
+      <Button
+        form="gigsPortingEmbedForm"
+        loading={status === 'submitting'}
+      >
+        Submit
+      </button>
+    <>
+  )
+}
+```
 
 ## Reference
 

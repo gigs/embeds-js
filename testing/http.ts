@@ -5,10 +5,6 @@ import { UpdatePortingBody } from '../lib/types'
 import { db } from './db'
 
 export const handlers: HttpHandler[] = [
-  http.get('https://api.example.com/users/:id', () => {
-    return HttpResponse.json({ name: 'George' })
-  }),
-
   http.get<{ project: string; id: string }>(
     'https://api.gigs.com/projects/:project/subscriptions/:id',
     async ({ params }) => {

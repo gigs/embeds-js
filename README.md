@@ -2,7 +2,7 @@
 
 Embeddable prebuilt and highly customizable UI components to use in your own JavaScript apps for web.
 
-> [!NOTE]
+> [!TIP]
 > This library is currently under development.
 
 ## Installation

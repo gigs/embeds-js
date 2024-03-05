@@ -490,3 +490,30 @@ describe('form class names', () => {
     expect(screen.getByRole('form')).toHaveClass('custom-class-submitting')
   })
 })
+
+describe('custom labels', () => {
+  it('allows to specify custom labels', () => {
+    const porting = portingFactory.build({
+      required: ['firstName', 'lastName', 'birthday'],
+    })
+    render(
+      <OptionsContext.Provider
+        value={{
+          text: {
+            'field.firstName.label': 'FN',
+            'field.lastName.label': 'LN',
+            'field.birthday.label': 'BD',
+          },
+        }}
+      >
+        <StepHolderDetailsForm porting={porting} onSubmit={vi.fn()} />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByLabelText('FN')).toBeInTheDocument()
+    expect(screen.getByLabelText('LN')).toBeInTheDocument()
+    expect(screen.getByLabelText('BD')).toBeInTheDocument()
+  })
+})

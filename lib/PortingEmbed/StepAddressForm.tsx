@@ -80,12 +80,14 @@ export function StepAddressForm({
     >
       <Field
         name="line1"
-        validate={[required('Line 1 is required')]}
+        validate={[required(options.text['field.line1.error.required'])]}
         transform={toTrimmed({ on: 'input' })}
       >
         {(field, props) => (
           <EmbedField of={field}>
-            <EmbedFieldLabel of={field}>Line 1</EmbedFieldLabel>
+            <EmbedFieldLabel of={field}>
+              {options.text['field.line1.label']}
+            </EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
               of={field}
@@ -100,7 +102,9 @@ export function StepAddressForm({
       <Field name="line2" transform={toTrimmed({ on: 'input' })}>
         {(field, props) => (
           <EmbedField of={field}>
-            <EmbedFieldLabel of={field}>Line 2</EmbedFieldLabel>
+            <EmbedFieldLabel of={field}>
+              {options.text['field.line2.label']}
+            </EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
               of={field}
@@ -113,12 +117,14 @@ export function StepAddressForm({
       </Field>
       <Field
         name="city"
-        validate={[required('City is required')]}
+        validate={[required(options.text['field.city.error.required'])]}
         transform={toTrimmed({ on: 'input' })}
       >
         {(field, props) => (
           <EmbedField of={field}>
-            <EmbedFieldLabel of={field}>City</EmbedFieldLabel>
+            <EmbedFieldLabel of={field}>
+              {options.text['field.city.label']}
+            </EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
               of={field}
@@ -132,12 +138,14 @@ export function StepAddressForm({
       </Field>
       <Field
         name="postalCode"
-        validate={[required('Postal Code is required')]}
+        validate={[required(options.text['field.postalCode.error.required'])]}
         transform={toTrimmed({ on: 'input' })}
       >
         {(field, props) => (
           <EmbedField of={field}>
-            <EmbedFieldLabel of={field}>Postal Code</EmbedFieldLabel>
+            <EmbedFieldLabel of={field}>
+              {options.text['field.postalCode.label']}
+            </EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
               of={field}
@@ -153,13 +161,15 @@ export function StepAddressForm({
         name="state"
         validate={pattern(
           /^[A-Z]{1,3}(-[A-Z0-9]{1,3})?$/,
-          'Must be an ISO state code',
+          options.text['field.state.error.format'],
         )}
         transform={[toTrimmed({ on: 'input' }), toUpperCase({ on: 'input' })]}
       >
         {(field, props) => (
           <EmbedField of={field}>
-            <EmbedFieldLabel of={field}>State (ISO code)</EmbedFieldLabel>
+            <EmbedFieldLabel of={field}>
+              {options.text['field.state.label']}
+            </EmbedFieldLabel>
             <EmbedFieldInput
               {...props}
               of={field}
@@ -174,15 +184,15 @@ export function StepAddressForm({
       <Field
         name="country"
         validate={[
-          required('Country is required'),
-          pattern(/^[A-Z]{2}$/, 'Must be an iso country code'),
+          required(options.text['field.country.error.required']),
+          pattern(/^[A-Z]{2}$/, options.text['field.country.error.format']),
         ]}
         transform={[toTrimmed({ on: 'input' }), toUpperCase({ on: 'input' })]}
       >
         {(field, props) => (
           <EmbedField of={field}>
             <EmbedFieldLabel of={field}>
-              Country (2 letter code)
+              {options.text['field.country.label']}
             </EmbedFieldLabel>
             <EmbedFieldInput
               {...props}

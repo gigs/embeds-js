@@ -54,6 +54,7 @@ embed.on('completed', ({ porting }) => {
   - [Show UI depending on the current step](#show-ui-depending-on-the-current-step)
   - [Use the included styling](#use-the-included-styling)
   - [CSS customization](#css-customization)
+  - [Translations and text customization](#translations-and-text-customization)
   - [Continue after all fields were filled out](#continue-after-all-fields-were-filled-out)
   - [Show a loading state while the form is submitted](#show-a-loading-state-while-the-form-is-submitted)
   - [Reacting to validation changes](#reacting-to-validation-changes)
@@ -77,6 +78,7 @@ embed.on('completed', ({ porting }) => {
   - [Values](#values)
     - [Step](#step)
     - [Field Names](#field-names)
+    - [Text](#text)
 
 ## Usage
 
@@ -155,6 +157,25 @@ See also:
 
 - [Step](#step) for the list of steps.
 - [Field Names](#field-names) for the list of field names.
+
+### Translations and text customization
+
+The embed ships with default text in english, but you can override any text that is rendered by the embed, if you want to support a different language or customize the text otherwise.
+
+```js
+const embed = await PortingEmbed(session, {
+  options: {
+    text: {
+      'field.firstName.label': 'Vorname',
+      'field.firstName.error.required': 'Muss ausgefüllt werden',
+      'field.lastName.label': 'Nachname',
+      'field.lastName.error.required': 'Muss ausgefüllt werden',
+      'field.birthday.label': 'Geburtsdatum',
+      // ...
+    }
+  }
+})
+```
 
 ### Continue after all fields were filled out
 
@@ -457,3 +478,33 @@ Each field in the a step has a name. If a field is not required by a porting, it
   - `country` (text)
 - Form: `donorProviderApproval`
   - `donorProviderApproval` (checkbox)
+
+#### Text
+
+| Key | Default |
+| - | - |
+| `field.accountNumber.label` | Account Number |
+| `field.accountNumber.error.required` | The account number is required |
+| `field.accountPin.label` | Account PIN |
+| `field.accountPin.error.required` | The account pin is required |
+| `field.accountPin.error.cleared` | The new account pin is empty. If you do not want to change the account pin, clear the input. |
+| `field.firstName.label` | First Name |
+| `field.firstName.error.required` | Your first name is required |
+| `field.lastName.label` | Last Name |
+| `field.lastName.error.required` | Your last name is required |
+| `field.birthday.label` | Birthday |
+| `field.birthday.error.required` | Your birthday is required |
+| `field.line1.label` | Line 1 |
+| `field.line1.error.required` | Line 1 is required |
+| `field.line2.label` | Line 2 |
+| `field.city.label` | City |
+| `field.city.error.required` | City is required |
+| `field.postalCode.label` | Postal Code |
+| `field.postalCode.error.required` | Postal Code is required |
+| `field.state.label` | State (ISO code) |
+| `field.state.error.format` | Must be an ISO state code |
+| `field.country.label` | Country (2 letter code) |
+| `field.country.error.required` | Country is required |
+| `field.country.error.format` | Must be an ISO country code |
+| `field.donorProviderApproval.label` | I have notified my current provider of the number porting and got the approval that the number can be ported |
+| `field.donorProviderApproval.error.required` | You must get the approval of your current provider |

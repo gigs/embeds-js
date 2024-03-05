@@ -72,7 +72,7 @@ export function StepCarrierDetailsForm({
           setError(
             form,
             'accountPin',
-            'The new account pin is empty. If you do not want to change the account pin, clear the input.',
+            options.text['field.accountPin.error.cleared'],
           )
           return
         }
@@ -87,12 +87,16 @@ export function StepCarrierDetailsForm({
       {porting.required.includes('accountNumber') && (
         <Field
           name="accountNumber"
-          validate={[required('The account number is required')]}
+          validate={[
+            required(options.text['field.accountNumber.error.required']),
+          ]}
           transform={toTrimmed({ on: 'input' })}
         >
           {(field, props) => (
             <EmbedField of={field}>
-              <EmbedFieldLabel of={field}>Account Number</EmbedFieldLabel>
+              <EmbedFieldLabel of={field}>
+                {options.text['field.accountNumber.label']}
+              </EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
                 of={field}
@@ -111,12 +115,14 @@ export function StepCarrierDetailsForm({
           validate={
             porting.accountPinExists
               ? []
-              : [required('The account pin is required')]
+              : [required(options.text['field.accountPin.error.required'])]
           }
         >
           {(field, props) => (
             <EmbedField of={field}>
-              <EmbedFieldLabel of={field}>Account PIN</EmbedFieldLabel>
+              <EmbedFieldLabel of={field}>
+                {options.text['field.accountPin.label']}
+              </EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
                 of={field}

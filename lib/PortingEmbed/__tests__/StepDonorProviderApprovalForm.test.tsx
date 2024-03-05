@@ -306,3 +306,26 @@ describe('form class names', () => {
     expect(screen.getByRole('form')).toHaveClass('custom-class-submitting')
   })
 })
+
+describe('custom labels', () => {
+  it('allows to specify custom labels', () => {
+    const porting = portingFactory.build({
+      required: ['donorProviderApproval'],
+    })
+    render(
+      <OptionsContext.Provider
+        value={{
+          text: {
+            'field.donorProviderApproval.label': 'I DO',
+          },
+        }}
+      >
+        <StepDonorProviderApprovalForm porting={porting} onSubmit={vi.fn()} />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByLabelText('I DO')).toBeInTheDocument()
+  })
+})

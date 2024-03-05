@@ -409,3 +409,28 @@ describe('form class names', () => {
     expect(screen.getByRole('form')).toHaveClass('custom-class-submitting')
   })
 })
+
+describe('custom labels', () => {
+  it('allows to specify custom labels', () => {
+    const porting = portingFactory.build({
+      required: ['accountNumber', 'accountPin'],
+    })
+    render(
+      <OptionsContext.Provider
+        value={{
+          text: {
+            'field.accountNumber.label': 'AN',
+            'field.accountPin.label': 'AP',
+          },
+        }}
+      >
+        <StepCarrierDetailsForm porting={porting} onSubmit={vi.fn()} />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByLabelText('AN')).toBeInTheDocument()
+    expect(screen.getByLabelText('AP')).toBeInTheDocument()
+  })
+})

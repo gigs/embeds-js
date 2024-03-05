@@ -580,3 +580,34 @@ describe('form class names', () => {
     expect(screen.getByRole('form')).toHaveClass('custom-class-submitting')
   })
 })
+
+describe('custom labels', () => {
+  it('allows to specify custom labels', () => {
+    const porting = portingFactory.build({ required: ['address'] })
+    render(
+      <OptionsContext.Provider
+        value={{
+          text: {
+            'field.line1.label': 'L1',
+            'field.line2.label': 'L2',
+            'field.city.label': 'CI',
+            'field.postalCode.label': 'PC',
+            'field.state.label': 'ST',
+            'field.country.label': 'CO',
+          },
+        }}
+      >
+        <StepAddressForm porting={porting} onSubmit={vi.fn()} />
+      </OptionsContext.Provider>,
+      {
+        wrapper,
+      },
+    )
+    expect(screen.getByLabelText('L1')).toBeInTheDocument()
+    expect(screen.getByLabelText('L2')).toBeInTheDocument()
+    expect(screen.getByLabelText('CI')).toBeInTheDocument()
+    expect(screen.getByLabelText('PC')).toBeInTheDocument()
+    expect(screen.getByLabelText('ST')).toBeInTheDocument()
+    expect(screen.getByLabelText('CO')).toBeInTheDocument()
+  })
+})

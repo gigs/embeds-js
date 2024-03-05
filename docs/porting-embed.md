@@ -162,6 +162,8 @@ See also:
 
 The embed ships with default text in english, but you can override any text that is rendered by the embed, if you want to support a different language or customize the text otherwise.
 
+You don't have to provide all text overrides. Your overrides will be merged into the default text.
+
 ```js
 const embed = await PortingEmbed(session, {
   options: {
@@ -176,6 +178,9 @@ const embed = await PortingEmbed(session, {
   }
 })
 ```
+
+See also:
+- [Text](#text) for a list of all text overrides.
 
 ### Continue after all fields were filled out
 

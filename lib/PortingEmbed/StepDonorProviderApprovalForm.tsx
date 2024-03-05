@@ -61,7 +61,7 @@ export function StepDonorProviderApprovalForm({
         name="donorProviderApproval"
         type="boolean"
         validate={[
-          required('You must get the approval of your current provider'),
+          required(options.text['field.donorProviderApproval.error.required']),
         ]}
       >
         {(field, props) => (
@@ -74,8 +74,7 @@ export function StepDonorProviderApprovalForm({
                 checked={field.value}
               />
               <EmbedFieldLabel of={field}>
-                I have notified my current provider of the number porting and
-                got the approval that the number can be ported
+                {options.text['field.donorProviderApproval.label']}
               </EmbedFieldLabel>
             </div>
             <EmbedFieldError of={field} />

@@ -1,4 +1,4 @@
 # Docs
 
-- [README](README.md)
-  - [Porting Embed](docs/porting-embed.md)
+- [README](../README.md)
+  - [Porting Embed](./porting-embed.md)

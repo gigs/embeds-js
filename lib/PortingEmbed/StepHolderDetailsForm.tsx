@@ -64,12 +64,14 @@ export function StepHolderDetailsForm({
       {porting.required.includes('firstName') && (
         <Field
           name="firstName"
-          validate={[required('Your first name is required')]}
+          validate={[required(options.text['field.firstName.error.required'])]}
           transform={toTrimmed({ on: 'input' })}
         >
           {(field, props) => (
             <EmbedField of={field}>
-              <EmbedFieldLabel of={field}>First Name</EmbedFieldLabel>
+              <EmbedFieldLabel of={field}>
+                {options.text['field.firstName.label']}
+              </EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
                 of={field}
@@ -85,12 +87,14 @@ export function StepHolderDetailsForm({
       {porting.required.includes('lastName') && (
         <Field
           name="lastName"
-          validate={[required('Your last name is required')]}
+          validate={[required(options.text['field.lastName.error.required'])]}
           transform={toTrimmed({ on: 'input' })}
         >
           {(field, props) => (
             <EmbedField of={field}>
-              <EmbedFieldLabel of={field}>Last Name</EmbedFieldLabel>
+              <EmbedFieldLabel of={field}>
+                {options.text['field.lastName.label']}
+              </EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
                 of={field}
@@ -106,12 +110,14 @@ export function StepHolderDetailsForm({
       {porting.required.includes('birthday') && (
         <Field
           name="birthday"
-          validate={[required('Your birthday is required')]}
+          validate={[required(options.text['field.birthday.error.required'])]}
           transform={toTrimmed({ on: 'input' })}
         >
           {(field, props) => (
             <EmbedField of={field}>
-              <EmbedFieldLabel of={field}>Birthday</EmbedFieldLabel>
+              <EmbedFieldLabel of={field}>
+                {options.text['field.birthday.label']}
+              </EmbedFieldLabel>
               <EmbedFieldInput
                 {...props}
                 of={field}

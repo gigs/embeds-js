@@ -52,8 +52,13 @@ embed.on('completed', ({ porting }) => {
 })
 ```
 
+## Example app
+
+See [`src/PortingEmbedExample.tsx`](/src/PortingEmbedExample.tsx) for a full example implementation.
+
 - [Demo](#demo)
 - [Minimal example](#minimal-example)
+- [Example app](#example-app)
 - [Usage](#usage)
   - [Show a loading spinner while the embed is initializing](#show-a-loading-spinner-while-the-embed-is-initializing)
   - [Show UI depending on the current step](#show-ui-depending-on-the-current-step)

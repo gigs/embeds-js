@@ -4,7 +4,7 @@
   "license": "MIT",
   "author": "Gigs (https://gigs.com)",
   "repository": "gigs/embeds-js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

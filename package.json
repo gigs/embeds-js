@@ -9,8 +9,7 @@
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "release": "release-it"
+    "build-storybook": "storybook build"
   },
   "type": "module",
   "main": "./dist/gigs-embeds.umd.cjs",

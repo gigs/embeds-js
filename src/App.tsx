@@ -7,6 +7,9 @@ import { PortingEmbedExample } from './PortingEmbedExample'
 
 type DemoStep = 'intro' | 'embed' | 'completed'
 
+// This is a small demo SPA to test the Porting Embed.
+// The Embed itself is initialized inside `PortingEmbedExample.tsx`.
+
 function App() {
   const [demoStep, setDemoStep] = useState<DemoStep>('intro')
   const [connectSession, setConnectSession] = useState<string>()

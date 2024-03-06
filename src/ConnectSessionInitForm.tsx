@@ -1,3 +1,7 @@
+// To enter the Project ID and ConnectSession manually.
+// In a real app, the ConnectSession will be created on your server.
+// This just exists for the purpose of the demo app.
+
 type Props = {
   onSubmit: (data: { connectSession: string; project: string }) => unknown
 }

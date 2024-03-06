@@ -1,14 +1,16 @@
 # Gigs Embeds for JavaScript (Web)
 
+<img width="600" height="390" src=".github/banner.png" alt="Gigs Embeds">
+
 Embeddable prebuilt and highly customizable UI components to use in your own JavaScript apps for web.
 
 > [!NOTE]
-> This library is currently under development.
+> This is currently a v0.x release. Anything may change at any time.
 
 ## Installation
 
 ```sh
-npm install @gigs/gigs-embeds-js
+npm install @gigscom/embeds-js
 ```
 
 ## Getting started

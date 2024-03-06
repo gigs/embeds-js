@@ -14,6 +14,10 @@ Each step will only be shown if the porting requires these fields, and if the us
 > [!IMPORTANT]  
 > The Porting Embed currently only supports portings in the status of `informationRequired`.
 
+## Demo
+
+https://github.com/gigs/gigs-embeds-js/assets/4227520/0f51d5e1-ff03-4b85-b661-8f4851b63d49
+
 ## Minimal example
 
 The embed mounts into an element on your site. Add a `<div id="portingEmbed">` to your site wherever the embed should be mounted to.
@@ -29,9 +33,9 @@ You have to specify your Gigs Project ID when initializing the embed.
 
 ```js
 // Optional. Adds styling to the embed.
-import '@gigs/gigs-embeds-js/style.css'
+import '@gigscom/embeds-js/style.css'
 
-import { PortingEmbed } from '@gigs/gigs-embeds-js'
+import { PortingEmbed } from '@gigscom/embeds-js'
 
 // Fetch a new ConnectSession from an internal API endpoint, or any other way
 // to obtain a new ConnectSession.
@@ -48,7 +52,13 @@ embed.on('completed', ({ porting }) => {
 })
 ```
 
+## Example app
+
+See [`src/PortingEmbedExample.tsx`](/src/PortingEmbedExample.tsx) for a full example implementation.
+
+- [Demo](#demo)
 - [Minimal example](#minimal-example)
+- [Example app](#example-app)
 - [Usage](#usage)
   - [Show a loading spinner while the embed is initializing](#show-a-loading-spinner-while-the-embed-is-initializing)
   - [Show UI depending on the current step](#show-ui-depending-on-the-current-step)
@@ -118,7 +128,7 @@ See also:
 The embed ships with default styles which you can import in your app.
 
 ```js
-import '@gigs/gigs-embeds-js/style.css'
+import '@gigscom/embeds-js/style.css'
 ```
 
 ### CSS customization

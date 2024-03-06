@@ -1,74 +1,115 @@
-import './App.css'
+import { useCallback, useState } from 'preact/hooks'
 
-import { useRef, useState } from 'preact/hooks'
-import * as React from 'react'
+import { Porting } from '../lib/types'
+import { CompletedScreen } from './CompletedScreen'
+import { ConnectSessionInitForm } from './ConnectSessionInitForm'
+import { PortingEmbedExample } from './PortingEmbedExample'
 
-import { PortingEmbed } from '../lib'
+type DemoStep = 'intro' | 'embed' | 'completed'
+
+// This is a small demo SPA to test the Porting Embed.
+// The Embed itself is initialized inside `PortingEmbedExample.tsx`.
 
 function App() {
-  const $portingEmbedEl = useRef<HTMLDivElement>(null)
-  const [loading, setLoading] = useState<'idle' | 'loading' | 'loaded'>('idle')
-  const [submitting, setSubmitting] = useState(false)
+  const [demoStep, setDemoStep] = useState<DemoStep>('intro')
+  const [connectSession, setConnectSession] = useState<string>()
+  const [project, setProject] = useState<string>()
+  const [finalPorting, setFinalPorting] = useState<Porting>()
 
-  async function handleSubmit(
-    event: React.JSX.TargetedSubmitEvent<HTMLFormElement>,
-  ) {
-    event.preventDefault()
+  const handleCompleted = useCallback((porting: Porting) => {
+    setFinalPorting(porting)
+    setDemoStep('completed')
+  }, [])
 
-    try {
-      setLoading('loading')
-      const formData = new FormData(event.currentTarget)
-      const csn = formData.get('csn')!.toString()
-      const project = formData.get('project')!.toString()
-
-      const embed = await PortingEmbed(JSON.parse(csn), {
-        project,
-        options: {
-          className: {
-            field: ({ valid }) =>
-              valid ? 'hey-custom-class' : 'hey-this-is-invalid',
-          },
-        },
-      })
-      setLoading('loaded')
-
-      embed.mount($portingEmbedEl.current!)
-
-      embed.on('submitStatus', (evt) => {
-        console.log('submit status changed:', evt)
-        setSubmitting(evt.status === 'loading')
-      })
-      embed.on('validationChange', (evt) => {
-        console.log('Porting Form is valid: ', evt)
-      })
-    } catch (error) {
-      console.error(error)
-      setLoading('idle')
-    }
-  }
+  const handleReset = useCallback(() => {
+    setDemoStep('intro')
+    setFinalPorting(undefined)
+    setConnectSession(undefined)
+    setProject(undefined)
+  }, [])
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <label>
-          <div>Project</div>
-          <input name="project" type="text" defaultValue="dev" />
-        </label>
-        <label>
-          <div>Connect Session</div>
-          <textarea rows={5} cols={40} name="csn" defaultValue="" />
-        </label>
-        <br />
-        <button type="submit">Initialize!</button>
-      </form>
-      <hr />
-      {loading === 'idle' && <div>Fill out form first</div>}
-      {loading === 'loading' && <div>Loading...</div>}
-      <div ref={$portingEmbedEl} />
-      <button type="submit" form="gigsPortingEmbedForm" disabled={submitting}>
-        {submitting ? 'Submitting...' : 'Save porting'}
-      </button>
-    </>
+    <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
+      <div className="space-y-10 divide-y divide-gray-900/10">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-3">
+          <div className="px-4 sm:px-0">
+            {demoStep === 'intro' && (
+              <>
+                <h2 className="text-base font-semibold leading-7 text-gray-900">
+                  Provide a Connect Session
+                </h2>
+                <p className="mt-1 text-sm leading-6 text-gray-600">
+                  To initialize the Embed, a Connect Session is necessary. This
+                  is not part of the Embed.
+                </p>
+                <p className="mt-4 text-sm leading-6 text-gray-600">
+                  For the purpose of this demo, create a Connect Session for a
+                  Porting which requires information, and paste the returned
+                  object.
+                </p>
+              </>
+            )}
+            {demoStep === 'embed' && (
+              <>
+                <h2 className="text-base font-semibold leading-7 text-gray-900">
+                  Porting Embed
+                </h2>
+                <p className="mt-1 text-sm leading-6 text-gray-600">
+                  You can now complete the Porting.
+                  <br />
+                  The text fields on the right are completely rendered by the
+                  Embed.
+                </p>
+                <button
+                  type="button"
+                  className="rounded bg-white mt-4 px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  onClick={handleReset}
+                >
+                  Reset
+                </button>
+              </>
+            )}
+            {demoStep === 'completed' && (
+              <>
+                <h2 className="text-base font-semibold leading-7 text-gray-900">
+                  After Porting Embed
+                </h2>
+                <p className="mt-1 text-sm leading-6 text-gray-600">
+                  The Porting is completed and the Porting Embed is not mounted
+                  anymore.
+                </p>
+                <button
+                  type="button"
+                  className="rounded bg-white mt-4 px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  onClick={handleReset}
+                >
+                  Reset
+                </button>
+              </>
+            )}
+          </div>
+          {demoStep === 'intro' && (
+            <ConnectSessionInitForm
+              onSubmit={({ connectSession, project }) => {
+                setConnectSession(connectSession)
+                setProject(project)
+                setDemoStep('embed')
+              }}
+            />
+          )}
+          {demoStep === 'embed' && (
+            <PortingEmbedExample
+              connectSession={connectSession!}
+              project={project!}
+              onCompleted={handleCompleted}
+            />
+          )}
+          {demoStep === 'completed' && (
+            <CompletedScreen porting={finalPorting!} />
+          )}
+        </div>
+      </div>
+    </div>
   )
 }
 

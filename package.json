@@ -71,6 +71,7 @@
   "files": [
     "lib",
     "dist",
+    "docs",
     "!**/__tests__",
     "!**/__mocks__",
     "!**/__stories__"

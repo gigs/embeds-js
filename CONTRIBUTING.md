@@ -40,16 +40,6 @@ npm run storybook
 
 The [storybook](/storybook/) is used to develop the UI of an embed without having to initialize it. Changes to the library's JavaScript code will be reflected in Storybook without a rebuild.
 
-## Publishing to npm
-
-We use [release-it](https://github.com/release-it/release-it) to make it easier to publish new versions. It handles common tasks like bumping version based on semver, creating tags and releases etc.
-
-To publish new versions, run the following:
-
-```sh
-npm run release
-```
-
 ## Linting
 
 Make sure your code passes TypeScript and ESLint. Run the following to verify:

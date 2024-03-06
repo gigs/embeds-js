@@ -1,6 +1,5 @@
 {
-  "name": "gigs-embeds-js",
-  "private": true,
+  "name": "@gigscom/embeds-js",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",

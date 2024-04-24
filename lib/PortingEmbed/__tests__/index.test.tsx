@@ -243,7 +243,7 @@ describe('updating a porting', () => {
       const sub = db.subscriptions.find(
         (s) => s.id === csn.intent.completePorting.subscription,
       )
-      const prt = db.portings.find((p) => p.id === sub!.porting!.id)
+      const prt = db.portings.find((p) => p.id === sub?.porting?.id)
       return prt
     }
 
@@ -368,7 +368,7 @@ describe('updating a porting', () => {
       })
     })
 
-    expect(submitStatusEvent.mock.lastCall[0].error).toMatch(
+    expect(submitStatusEvent.mock.lastCall[0].error.message).toMatch(
       /FETCH_FAILED: Simulated error/i,
     )
   })

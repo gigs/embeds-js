@@ -275,15 +275,15 @@ describe('updating a porting', () => {
       nextStep: 'address',
       prevStep: 'holderDetails',
     })
-    // expect(getCurrentPorting()).toMatchObject({
-    //   accountPinExists: true,
-    //   accountNumber: '11880',
-    //   firstName: 'first',
-    //   lastName: 'last',
-    //   birthday: null,
-    //   address: null,
-    //   donorProviderApproval: null,
-    // })
+    expect(getCurrentPorting()).toMatchObject({
+      accountPinExists: true,
+      accountNumber: '11880',
+      firstName: 'first',
+      lastName: 'last',
+      birthday: null,
+      address: null,
+      donorProviderApproval: null,
+    })
 
     await user.type(screen.getByLabelText('Line 1'), 'line1')
     await user.type(screen.getByLabelText('City'), 'city')
@@ -296,22 +296,22 @@ describe('updating a porting', () => {
       nextStep: 'donorProviderApproval',
       prevStep: 'address',
     })
-    // expect(getCurrentPorting()).toMatchObject({
-    //   accountPinExists: true,
-    //   accountNumber: '11880',
-    //   firstName: 'first',
-    //   lastName: 'last',
-    //   birthday: null,
-    //   address: {
-    //     line1: 'line1',
-    //     line2: null,
-    //     city: 'city',
-    //     postalCode: 'pc123',
-    //     state: null,
-    //     country: 'CO',
-    //   },
-    //   donorProviderApproval: null,
-    // })
+    expect(getCurrentPorting()).toMatchObject({
+      accountPinExists: true,
+      accountNumber: '11880',
+      firstName: 'first',
+      lastName: 'last',
+      birthday: null,
+      address: {
+        line1: 'line1',
+        line2: null,
+        city: 'city',
+        postalCode: 'pc123',
+        state: null,
+        country: 'CO',
+      },
+      donorProviderApproval: null,
+    })
 
     await user.click(screen.getByLabelText(/i have notified my current/i))
     expect(screen.getByLabelText(/i have notified my current/i)).toBeChecked()
@@ -344,7 +344,7 @@ describe('updating a porting', () => {
     expect(completedEvent).toHaveBeenCalledWith({
       porting: expect.objectContaining(finalPorting),
     })
-    // expect(getCurrentPorting()).toMatchObject(finalPorting)
+    expect(getCurrentPorting()).toMatchObject(finalPorting)
   })
 
   it('triggers an error event on error', async () => {

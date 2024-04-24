@@ -2,6 +2,11 @@
 
 This project is built with [Preact](https://preactjs.com/) and bundled with [Vite](https://vitejs.dev/).
 
+## Prerequisites
+
+- Node.js
+- This project uses pnpm. Run `corepack enable` to use pnpm in this project.
+
 ## Development workflow
 
 This project uses Vite's [Library Mode](https://vitejs.dev/guide/build.html#library-mode).
@@ -10,10 +15,10 @@ This project uses Vite's [Library Mode](https://vitejs.dev/guide/build.html#libr
 - The example app in the `src/` directory.
 - Tests and Stories are colocated to embeds inside the `lib/` directory.
 
-To get started with the project, run `npm i` in the root directory.
+To get started with the project, run `pnpm i` in the root directory.
 
 ```sh
-npm i
+pnpm i
 ```
 
 ### Example App
@@ -22,20 +27,20 @@ The [example app](/example/) demonstrates usage of the library and works as a de
 
 It is configured to use the local version of the library, so any changes you make to the library's source code will be reflected in the example app. Changes to the library's JavaScript code will be reflected in the example app without a rebuild.
 
-To start the development server, run `npm run dev`.
+To start the development server, run `pnpm dev`.
 
 ```sh
-npm run dev
+pnpm dev
 ```
 
 You can then open the example app in your browser.
 
 ### Storybook
 
-To develop with Storybook, run `npm run storybook`.
+To develop with Storybook, run `pnpm storybook`.
 
 ```sh
-npm run storybook
+pnpm storybook
 ```
 
 The [storybook](/storybook/) is used to develop the UI of an embed without having to initialize it. Changes to the library's JavaScript code will be reflected in Storybook without a rebuild.
@@ -45,14 +50,14 @@ The [storybook](/storybook/) is used to develop the UI of an embed without havin
 Make sure your code passes TypeScript and ESLint. Run the following to verify:
 
 ```sh
-npm run typecheck
-npm run lint
+pnpm typecheck
+pnpm lint
 ```
 
 To fix formatting errors, run the following:
 
 ```sh
-npm run lint --fix
+pnpm lint --fix
 ```
 
 ## Testing
@@ -62,5 +67,5 @@ We use [Vitest](https://vitest.dev/) for testing, together with [Preact Testing 
 Run the unit tests by:
 
 ```sh
-npm test
+pnpm test
 ```

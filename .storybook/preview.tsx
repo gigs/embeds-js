@@ -2,7 +2,7 @@ import React from 'react'
 import type { Preview } from '@storybook/preact'
 
 import './styles.css'
-import '../lib/PortingEmbed/styles.css'
+import '../lib/styles/styles.css'
 
 const preview: Preview = {
   decorators: [

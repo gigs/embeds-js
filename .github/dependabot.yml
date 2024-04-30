@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+    groups:
+      lint:
+        patterns:
+          - 'prettier*'
+          - 'eslint*'
+      storybook:
+        patterns:
+          - '@storybook*'
+          - 'storybook'
+      react:
+        patterns:
+          - 'react'
+          - 'react-dom'

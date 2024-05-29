@@ -23,7 +23,7 @@ importers:
         version: 8.1.3(@types/react@18.3.2)(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/addon-interactions':
         specifier: ^8.0.10
-        version: 8.1.3(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.0.0))
+        version: 8.1.3(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.1.0))
       '@storybook/addon-links':
         specifier: ^8.0.10
         version: 8.1.3(react@18.3.1)
@@ -38,13 +38,13 @@ importers:
         version: 8.1.3(@preact/preset-vite@2.8.2(@babel/core@7.24.5)(preact@10.22.0)(vite@5.2.12(@types/node@20.12.12)))(preact@10.22.0)(prettier@3.2.5)(typescript@5.4.5)(vite@5.2.12(@types/node@20.12.12))
       '@storybook/test':
         specifier: ^8.0.10
-        version: 8.1.3(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.0.0))
+        version: 8.1.3(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.1.0))
       '@tailwindcss/forms':
         specifier: ^0.5.7
         version: 0.5.7(tailwindcss@3.4.3)
       '@testing-library/jest-dom':
         specifier: ^6.4.2
-        version: 6.4.5(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.0.0))
+        version: 6.4.5(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.1.0))
       '@testing-library/preact':
         specifier: ^3.2.3
         version: 3.2.3(preact@10.22.0)
@@ -89,7 +89,7 @@ importers:
         version: 2.2.2
       jsdom:
         specifier: ^24.0.0
-        version: 24.0.0
+        version: 24.1.0
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
@@ -131,7 +131,7 @@ importers:
         version: 4.3.2(typescript@5.4.5)(vite@5.2.12(@types/node@20.12.12))
       vitest:
         specifier: ^1.2.2
-        version: 1.6.0(@types/node@20.12.12)(jsdom@24.0.0)
+        version: 1.6.0(@types/node@20.12.12)(jsdom@24.1.0)
 
 packages:
 
@@ -3293,8 +3293,8 @@ packages:
       '@babel/preset-env':
         optional: true
 
-  jsdom@24.0.0:
-    resolution: {integrity: sha512-UDS2NayCvmXSXVP6mpTj+73JnNQadZlr9N68189xib2tx5Mls7swlTNao26IoHv46BZJFvXygyRtyXd1feAk1A==}
+  jsdom@24.1.0:
+    resolution: {integrity: sha512-6gpM7pRXCwIOKxX47cgOyvyQDN/Eh0f1MeKySBV2xGdKtqJBLj8P25eY3EVCWo2mglDDzozR2r2MW4T+JiNUZA==}
     engines: {node: '>=18'}
     peerDependencies:
       canvas: ^2.11.2
@@ -3659,8 +3659,8 @@ packages:
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
 
-  nwsapi@2.2.9:
-    resolution: {integrity: sha512-2f3F0SEEer8bBu0dsNCFF50N0cTThV1nWFYcEYFZttdW0lDAoybv9cQoK7X7/68Z89S7FoRrVjP1LPX4XRf9vg==}
+  nwsapi@2.2.10:
+    resolution: {integrity: sha512-QK0sRs7MKv0tKe1+5uZIQk/C8XGza4DAnztJG8iD+TpJIORARrCxczA738awHrZoHeTjSSoHqao2teO0dC/gFQ==}
 
   nypm@0.3.8:
     resolution: {integrity: sha512-IGWlC6So2xv6V4cIDmoV0SwwWx7zLG086gyqkyumteH2fIgCAM4nDVFB2iDRszDvmdSVW9xb1N+2KjQ6C7d4og==}
@@ -4168,6 +4168,9 @@ packages:
   rrweb-cssom@0.6.0:
     resolution: {integrity: sha512-APM0Gt1KoXBz0iIkkdB/kfvGOwC4UuJFeG/c+yV7wSc7q96cG/kJ0HiYCnzivD9SB53cLV1MlHFNfOuPaadYSw==}
 
+  rrweb-cssom@0.7.0:
+    resolution: {integrity: sha512-KlSv0pm9kgQSRxXEMgtivPJ4h826YHsuob8pSHcfSZsSXGtvpEAie8S0AnXuObEJ7nhikOb4ahwxDm0H2yW17g==}
+
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
@@ -4476,8 +4479,8 @@ packages:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
 
-  tough-cookie@4.1.3:
-    resolution: {integrity: sha512-aX/y5pVRkfRnfmuX+OdbSdXvPe6ieKX/G2s7e98f4poJHnqH3281gDPm/metm6E/WRamfx7WC4HUqkWHfQHprw==}
+  tough-cookie@4.1.4:
+    resolution: {integrity: sha512-Loo5UUvLD9ScZ6jh8beX1T6sO1w2/MpCRpEP7V280GKMVUQ0Jzar2U3UJPsrdbziLEMMhu3Ujnq//rhiFuIeag==}
     engines: {node: '>=6'}
 
   tr46@0.0.3:
@@ -4863,18 +4866,6 @@ packages:
 
   write-file-atomic@2.4.3:
     resolution: {integrity: sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==}
-
-  ws@8.16.0:
-    resolution: {integrity: sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
 
   ws@8.17.0:
     resolution: {integrity: sha512-uJq6108EgZMAl20KagGkzCKfMEjxmKvZHG7Tlq0Z6nOky7YF7aq4mOx6xK8TJ/i1LeK4Qus7INktacctDgY8Ow==}
@@ -6457,11 +6448,11 @@ snapshots:
     dependencies:
       '@storybook/global': 5.0.0
 
-  '@storybook/addon-interactions@8.1.3(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.0.0))':
+  '@storybook/addon-interactions@8.1.3(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.1.0))':
     dependencies:
       '@storybook/global': 5.0.0
       '@storybook/instrumenter': 8.1.3
-      '@storybook/test': 8.1.3(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.0.0))
+      '@storybook/test': 8.1.3(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.1.0))
       '@storybook/types': 8.1.3
       polished: 4.3.1
       ts-dedent: 2.2.0
@@ -6933,14 +6924,14 @@ snapshots:
       - prettier
       - supports-color
 
-  '@storybook/test@8.1.3(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.0.0))':
+  '@storybook/test@8.1.3(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.1.0))':
     dependencies:
       '@storybook/client-logger': 8.1.3
       '@storybook/core-events': 8.1.3
       '@storybook/instrumenter': 8.1.3
       '@storybook/preview-api': 8.1.3
       '@testing-library/dom': 9.3.4
-      '@testing-library/jest-dom': 6.4.5(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.0.0))
+      '@testing-library/jest-dom': 6.4.5(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.1.0))
       '@testing-library/user-event': 14.5.2(@testing-library/dom@9.3.4)
       '@vitest/expect': 1.3.1
       '@vitest/spy': 1.6.0
@@ -6995,7 +6986,7 @@ snapshots:
       lz-string: 1.5.0
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@6.4.5(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.0.0))':
+  '@testing-library/jest-dom@6.4.5(vitest@1.6.0(@types/node@20.12.12)(jsdom@24.1.0))':
     dependencies:
       '@adobe/css-tools': 4.3.3
       '@babel/runtime': 7.24.4
@@ -7006,7 +6997,7 @@ snapshots:
       lodash: 4.17.21
       redent: 3.0.0
     optionalDependencies:
-      vitest: 1.6.0(@types/node@20.12.12)(jsdom@24.0.0)
+      vitest: 1.6.0(@types/node@20.12.12)(jsdom@24.1.0)
 
   '@testing-library/preact@3.2.3(preact@10.22.0)':
     dependencies:
@@ -8812,7 +8803,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  jsdom@24.0.0:
+  jsdom@24.1.0:
     dependencies:
       cssstyle: 4.0.1
       data-urls: 5.0.0
@@ -8822,18 +8813,18 @@ snapshots:
       http-proxy-agent: 7.0.2
       https-proxy-agent: 7.0.4
       is-potential-custom-element-name: 1.0.1
-      nwsapi: 2.2.9
+      nwsapi: 2.2.10
       parse5: 7.1.2
-      rrweb-cssom: 0.6.0
+      rrweb-cssom: 0.7.0
       saxes: 6.0.0
       symbol-tree: 3.2.4
-      tough-cookie: 4.1.3
+      tough-cookie: 4.1.4
       w3c-xmlserializer: 5.0.0
       webidl-conversions: 7.0.0
       whatwg-encoding: 3.1.1
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.0.0
-      ws: 8.16.0
+      ws: 8.17.0
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -9149,7 +9140,7 @@ snapshots:
     dependencies:
       boolbase: 1.0.0
 
-  nwsapi@2.2.9: {}
+  nwsapi@2.2.10: {}
 
   nypm@0.3.8:
     dependencies:
@@ -9679,6 +9670,8 @@ snapshots:
 
   rrweb-cssom@0.6.0: {}
 
+  rrweb-cssom@0.7.0: {}
+
   run-parallel@1.2.0:
     dependencies:
       queue-microtask: 1.2.3
@@ -10021,7 +10014,7 @@ snapshots:
 
   toidentifier@1.0.1: {}
 
-  tough-cookie@4.1.3:
+  tough-cookie@4.1.4:
     dependencies:
       psl: 1.9.0
       punycode: 2.3.1
@@ -10247,7 +10240,7 @@ snapshots:
       '@types/node': 20.12.12
       fsevents: 2.3.3
 
-  vitest@1.6.0(@types/node@20.12.12)(jsdom@24.0.0):
+  vitest@1.6.0(@types/node@20.12.12)(jsdom@24.1.0):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -10271,7 +10264,7 @@ snapshots:
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@types/node': 20.12.12
-      jsdom: 24.0.0
+      jsdom: 24.1.0
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -10389,8 +10382,6 @@ snapshots:
       graceful-fs: 4.2.11
       imurmurhash: 0.1.4
       signal-exit: 3.0.7
-
-  ws@8.16.0: {}
 
   ws@8.17.0: {}
 

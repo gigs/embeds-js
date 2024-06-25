@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@modular-forms/preact':
-        specifier: ^0.8.0
-        version: 0.8.0(@preact/signals@1.2.3(preact@10.22.0))(preact@10.22.0)
+        specifier: ^0.9.0
+        version: 0.9.0(@preact/signals@1.2.3(preact@10.22.0))(preact@10.22.0)
       '@preact/signals':
         specifier: ^1.2.2
         version: 1.2.3(preact@10.22.0)
@@ -1289,8 +1289,8 @@ packages:
   '@microsoft/tsdoc@0.14.2':
     resolution: {integrity: sha512-9b8mPpKrfeGRuhFH5iO1iwCLeIIsV6+H1sRfxbkoGXIyQE2BTsPd9zqSqQJ+pv5sJ/hT5M1zvOFL02MnEezFug==}
 
-  '@modular-forms/preact@0.8.0':
-    resolution: {integrity: sha512-5dqQ2tw8mjHvYtNghj7pSQUEALv3tV2qKWq2iuDmk7/qjTlPaWvi1VcKLI/x6uBk5/UTB8R8FiPz42WBMb9UHg==}
+  '@modular-forms/preact@0.9.0':
+    resolution: {integrity: sha512-wTE+2C+7lkfUXTgRIAfS9cU06RYGS3iwM75Xhb6CO3LetOd70qVoTkF/8UoYe38P3tpfXKptKUlErK1ReVXFHg==}
     peerDependencies:
       '@preact/signals': ^1.0.0
       preact: ^10.0.0
@@ -4874,8 +4874,8 @@ packages:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
 
-  valibot@0.31.0:
-    resolution: {integrity: sha512-bleS8aVFpRGTUgbMoXzsRJhpxJGiZ3MG1nuNSORuDvio+sI1EyT1+lQHg+77Pfnlxz+25Uj5HiwdaklcDcYdiQ==}
+  valibot@0.35.0:
+    resolution: {integrity: sha512-+i2aCRkReTrd5KBN/dW2BrPOvFnU5LXTV2xjZnjnqUIO8YUx6P2+MgRrkwF2FhkexgyKq/NIZdPdknhHf5A/Ww==}
 
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
@@ -6416,11 +6416,11 @@ snapshots:
 
   '@microsoft/tsdoc@0.14.2': {}
 
-  '@modular-forms/preact@0.8.0(@preact/signals@1.2.3(preact@10.22.0))(preact@10.22.0)':
+  '@modular-forms/preact@0.9.0(@preact/signals@1.2.3(preact@10.22.0))(preact@10.22.0)':
     dependencies:
       '@preact/signals': 1.2.3(preact@10.22.0)
       preact: 10.22.0
-      valibot: 0.31.0
+      valibot: 0.35.0
 
   '@mswjs/cookies@1.1.0': {}
 
@@ -10561,7 +10561,7 @@ snapshots:
 
   uuid@9.0.1: {}
 
-  valibot@0.31.0: {}
+  valibot@0.35.0: {}
 
   validate-npm-package-license@3.0.4:
     dependencies:

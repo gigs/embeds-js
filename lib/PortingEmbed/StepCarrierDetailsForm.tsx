@@ -9,17 +9,6 @@ import { EmbedFieldLabel } from './EmbedFieldLabel'
 import { defaultFormId, useEmbedOptions } from './Options'
 import { sanitizeSubmitData } from './sanitizeSubmitData'
 
-export type StepCarrierDetailsFormData = {
-  accountNumber?: string
-  accountPin?: string
-}
-
-type Props = {
-  porting: Porting
-  onValidationChange?: (event: { isValid: boolean }) => unknown
-  onSubmit: (data: Partial<StepCarrierDetailsFormData>) => unknown
-}
-
 const normalizeAccountPin = (
   accountPin: string | undefined,
   donorProviderName: string | undefined,
@@ -39,6 +28,17 @@ const normalizeAccountPin = (
 
   // In all other cases, trim the accountPin
   return accountPin.trim()
+}
+
+export type StepCarrierDetailsFormData = {
+  accountNumber?: string
+  accountPin?: string
+}
+
+type Props = {
+  porting: Porting
+  onValidationChange?: (event: { isValid: boolean }) => unknown
+  onSubmit: (data: Partial<StepCarrierDetailsFormData>) => unknown
 }
 
 export function StepCarrierDetailsForm({

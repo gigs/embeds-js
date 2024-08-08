@@ -62,12 +62,42 @@ describe('carrier details', () => {
     )
 
     await user.type(screen.getByLabelText('Account Number'), '123456')
-    await user.type(screen.getByLabelText('Account PIN'), '1234')
+    await user.type(screen.getByLabelText('Account PIN'), '123-456')
     await user.click(screen.getByRole('button', { name: 'Submit' }))
 
     expect(submit).toHaveBeenCalledWith({
       accountNumber: '123456',
-      accountPin: '1234',
+      accountPin: '123-456',
+    })
+  })
+
+  it('strips dashes from accountPin if porting donor provider is Verizon', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <PortingForm
+        porting={{
+          ...porting,
+          donorProvider: {
+            object: 'serviceProvider',
+            id: 'svp_0T6kd2kx4eNwH7Thi9tAl5',
+            name: 'Verizon',
+            recipientProviders: [],
+          },
+        }}
+        onValidationChange={validationChange}
+        onSubmit={submit}
+      />,
+      { wrapper },
+    )
+
+    await user.type(screen.getByLabelText('Account Number'), '123456')
+    await user.type(screen.getByLabelText('Account PIN'), '123-456')
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(submit).toHaveBeenCalledWith({
+      accountNumber: '123456',
+      accountPin: '123456',
     })
   })
 })

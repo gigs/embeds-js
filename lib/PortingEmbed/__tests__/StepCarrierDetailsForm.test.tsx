@@ -171,6 +171,33 @@ describe('account pin', () => {
     expect(submit).toHaveBeenCalledWith({ accountPin: '1234 56' })
   })
 
+  it('removes dashes when submitting for Verizon donor provider', async () => {
+    const porting = portingFactory.build({ required: ['accountPin'] })
+    const user = userEvent.setup()
+    const submit = vi.fn()
+    render(
+      <StepCarrierDetailsForm
+        porting={{
+          ...porting,
+          donorProvider: {
+            object: 'serviceProvider',
+            id: 'svp_0T6kd2kx4eNwH7Thi9tAl5',
+            name: 'Verizon',
+            recipientProviders: [],
+          },
+        }}
+        onSubmit={submit}
+      />,
+      {
+        wrapper,
+      },
+    )
+
+    await user.type(screen.getByLabelText('Account PIN'), '  123-456  ')
+    await user.click(screen.getByRole('button'))
+    expect(submit).toHaveBeenCalledWith({ accountPin: '123456' })
+  })
+
   it('shows an error on submit when left empty and not present', async () => {
     const porting = portingFactory.build({ required: ['accountPin'] })
     const user = userEvent.setup()

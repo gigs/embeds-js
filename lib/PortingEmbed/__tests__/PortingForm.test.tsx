@@ -97,6 +97,31 @@ describe('carrier details', () => {
       accountPin: '123456',
     })
   })
+
+  it('does not strip dashes from accountPin for donor provider other than Verizon', async () => {
+    const user = userEvent.setup()
+    const porting = portingFactory.build({
+      required: ['accountNumber', 'accountPin'],
+    })
+
+    render(
+      <PortingForm
+        porting={porting}
+        onValidationChange={validationChange}
+        onSubmit={submit}
+      />,
+      { wrapper },
+    )
+
+    await user.type(screen.getByLabelText('Account Number'), '123456')
+    await user.type(screen.getByLabelText('Account PIN'), '123-456')
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(submit).toHaveBeenCalledWith({
+      accountNumber: '123456',
+      accountPin: '123-456',
+    })
+  })
 })
 
 describe('holder details', () => {

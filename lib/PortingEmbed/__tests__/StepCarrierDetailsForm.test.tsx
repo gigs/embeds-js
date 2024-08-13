@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/preact'
 import userEvent from '@testing-library/user-event'
 
 import { portingFactory } from '@/testing/factories/porting'
+import { serviceProviderFactory } from '@/testing/factories/serviceProvider'
 
 import { OptionsContext } from '../Options'
 import { StepCarrierDetailsForm } from '../StepCarrierDetailsForm'
@@ -172,26 +173,15 @@ describe('account pin', () => {
   })
 
   it('removes dashes when submitting for Verizon donor provider', async () => {
-    const porting = portingFactory.build({ required: ['accountPin'] })
+    const donorProvider = serviceProviderFactory.build({ name: 'Verizon' })
+    const porting = portingFactory
+      .associations({ donorProvider })
+      .build({ required: ['accountPin'] })
     const user = userEvent.setup()
     const submit = vi.fn()
-    render(
-      <StepCarrierDetailsForm
-        porting={{
-          ...porting,
-          donorProvider: {
-            object: 'serviceProvider',
-            id: 'svp_0T6kd2kx4eNwH7Thi9tAl5',
-            name: 'Verizon',
-            recipientProviders: [],
-          },
-        }}
-        onSubmit={submit}
-      />,
-      {
-        wrapper,
-      },
-    )
+    render(<StepCarrierDetailsForm porting={porting} onSubmit={submit} />, {
+      wrapper,
+    })
 
     await user.type(screen.getByLabelText('Account PIN'), '  123-456  ')
     await user.click(screen.getByRole('button'))

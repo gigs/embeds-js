@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/preact'
 import userEvent from '@testing-library/user-event'
 
 import { portingFactory } from '@/testing/factories/porting'
+import { serviceProviderFactory } from '@/testing/factories/serviceProvider'
 
 import { PortingForm } from '../PortingForm'
 
@@ -73,18 +74,14 @@ describe('carrier details', () => {
 
   it('strips dashes from accountPin if porting donor provider is Verizon', async () => {
     const user = userEvent.setup()
+    const donorProvider = serviceProviderFactory.build({ name: 'Verizon' })
+    const porting = portingFactory
+      .associations({ donorProvider })
+      .build({ required: ['accountNumber', 'accountPin'] })
 
     render(
       <PortingForm
-        porting={{
-          ...porting,
-          donorProvider: {
-            object: 'serviceProvider',
-            id: 'svp_0T6kd2kx4eNwH7Thi9tAl5',
-            name: 'Verizon',
-            recipientProviders: [],
-          },
-        }}
+        porting={porting}
         onValidationChange={validationChange}
         onSubmit={submit}
       />,

@@ -1,14 +1,14 @@
-import React from 'react'
-import type { Preview } from '@storybook/preact'
-
 import './styles.css'
 import '../lib/styles/styles.css'
+
+import type { Preview } from '@storybook/preact'
+import React from 'react'
 
 const preview: Preview = {
   decorators: [
     (Story) => (
       <div className="GigsEmbeds-root">
-        {/* @ts-expect-error */}
+        {/* @ts-expect-error Fix Node ReactNode mismatch */}
         {Story()}
       </div>
     ),

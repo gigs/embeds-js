@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
@@ -35,6 +35,9 @@
     "@preact/signals": "^1.2.2"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.1.1",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.9.0",
     "@preact/preset-vite": "^2.8.1",
     "@storybook/addon-essentials": "^8.0.10",
     "@storybook/addon-interactions": "^8.0.10",
@@ -59,6 +62,7 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-storybook": "^0.8.0",
     "fishery": "^2.2.2",
+    "globals": "^15.9.0",
     "jsdom": "^24.0.0",
     "mitt": "^3.0.1",
     "msw": "^2.2.0",

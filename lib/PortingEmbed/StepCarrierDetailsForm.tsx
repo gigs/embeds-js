@@ -9,6 +9,27 @@ import { EmbedFieldLabel } from './EmbedFieldLabel'
 import { defaultFormId, useEmbedOptions } from './Options'
 import { sanitizeSubmitData } from './sanitizeSubmitData'
 
+const normalizeAccountPin = (
+  accountPin: string | undefined,
+  donorProviderName: string | undefined,
+) => {
+  // If accountPin is `undefined`, keep it that way
+  if (!accountPin) {
+    return accountPin
+  }
+
+  // If the donor provider is Verizon, we want to strip eventual dashes.
+  // Verizon displays their account PINs to users with dashes when they retreive it,
+  // but expects the PIN without dashes.
+  // In order to prevent failed portings, we remove them here.
+  if (donorProviderName === 'Verizon') {
+    return accountPin.replaceAll('-', '').trim()
+  }
+
+  // In all other cases, trim the accountPin
+  return accountPin.trim()
+}
+
 export type StepCarrierDetailsFormData = {
   accountNumber?: string
   accountPin?: string
@@ -77,8 +98,11 @@ export function StepCarrierDetailsForm({
           return
         }
 
-        // Trim the account pin if there is one
-        data.accountPin = data.accountPin?.trim()
+        // Normalize the accountPin
+        data.accountPin = normalizeAccountPin(
+          data.accountPin,
+          porting.donorProvider?.name,
+        )
 
         const sanitizedData = sanitizeSubmitData(data)
         return onSubmit(sanitizedData)

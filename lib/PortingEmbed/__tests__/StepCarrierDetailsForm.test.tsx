@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/preact'
 import userEvent from '@testing-library/user-event'
 
 import { portingFactory } from '@/testing/factories/porting'
+import { serviceProviderFactory } from '@/testing/factories/serviceProvider'
 
 import { OptionsContext } from '../Options'
 import { StepCarrierDetailsForm } from '../StepCarrierDetailsForm'
@@ -169,6 +170,35 @@ describe('account pin', () => {
     await user.type(screen.getByLabelText('Account PIN'), '  1234 56  ')
     await user.click(screen.getByRole('button'))
     expect(submit).toHaveBeenCalledWith({ accountPin: '1234 56' })
+  })
+
+  it('removes dashes when submitting for Verizon donor provider', async () => {
+    const donorProvider = serviceProviderFactory.build({ name: 'Verizon' })
+    const porting = portingFactory
+      .associations({ donorProvider })
+      .build({ required: ['accountPin'] })
+    const user = userEvent.setup()
+    const submit = vi.fn()
+    render(<StepCarrierDetailsForm porting={porting} onSubmit={submit} />, {
+      wrapper,
+    })
+
+    await user.type(screen.getByLabelText('Account PIN'), '  123-456  ')
+    await user.click(screen.getByRole('button'))
+    expect(submit).toHaveBeenCalledWith({ accountPin: '123456' })
+  })
+
+  it('does not remove dashes for donor providers other than Veriozon', async () => {
+    const porting = portingFactory.build({ required: ['accountPin'] })
+    const user = userEvent.setup()
+    const submit = vi.fn()
+    render(<StepCarrierDetailsForm porting={porting} onSubmit={submit} />, {
+      wrapper,
+    })
+
+    await user.type(screen.getByLabelText('Account PIN'), '  123-456  ')
+    await user.click(screen.getByRole('button'))
+    expect(submit).toHaveBeenCalledWith({ accountPin: '123-456' })
   })
 
   it('shows an error on submit when left empty and not present', async () => {

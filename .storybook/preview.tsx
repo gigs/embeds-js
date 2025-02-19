@@ -13,6 +13,7 @@ const preview: Preview = {
       </div>
     ),
   ],
+
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
@@ -22,6 +23,8 @@ const preview: Preview = {
       },
     },
   },
+
+  tags: ['autodocs'],
 }
 
 export default preview
